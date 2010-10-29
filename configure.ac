@@ -23,7 +23,7 @@ dnl Process this file with autoconf to create configure.
 AC_PREREQ([2.60])
 
 AC_INIT([libXfont],
-	1.4.2,
+	[1.4.3],
 	[https://bugs.freedesktop.org/enter_bug.cgi?product=xorg],
 	libXfont)
 # Autoheader generates config.h.in. No new lines allowed in the list.

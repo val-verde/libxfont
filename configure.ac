@@ -48,7 +48,6 @@ XORG_WITH_FOP
 XORG_CHECK_SGML_DOCTOOLS(1.5)
 
 # Check for progs
-AC_PROG_CC
 AC_PROG_LIBTOOL
 dnl If the first PKG_CHECK_MODULES appears inside a conditional, pkg-config
 dnl must first be located explicitly.

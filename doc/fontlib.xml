@@ -4,7 +4,7 @@
 <!-- lifted from troff+ms by doclifter -->
 <!-- previous version was in xorg-docs/specs/Xserver/fontlib.ms -->
 
-  <article id='fontlibms'>
+  <article id='fontlib'>
 <!-- .ps 12 -->
 <!-- .EF 'Font Library Interface'\- % \-'July 27, 1991' -->
 <!-- .OF 'Font Library Interface'\- % \-'July 27, 1991' -->

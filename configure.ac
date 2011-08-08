@@ -27,7 +27,7 @@ AC_PREREQ([2.60])
 # Yes, it is a pain to synchronize version numbers.  Unfortunately, it's
 # not possible to extract the version number here from Xfont.h
 #
-AC_INIT([libXfont], [1.4.3],
+AC_INIT([libXfont], [1.4.4],
 	[https://bugs.freedesktop.org/enter_bug.cgi?product=xorg], [libXfont])
 AC_CONFIG_SRCDIR([Makefile.am])
 AC_CONFIG_HEADERS([config.h include/X11/fonts/fontconf.h])

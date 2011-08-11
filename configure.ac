@@ -21,12 +21,6 @@
 
 # Initialize Autoconf
 AC_PREREQ([2.60])
-#
-# This is the package version number, not the shared library
-# version.  This same version number must appear in Xfont.h
-# Yes, it is a pain to synchronize version numbers.  Unfortunately, it's
-# not possible to extract the version number here from Xfont.h
-#
 AC_INIT([libXfont], [1.4.4],
 	[https://bugs.freedesktop.org/enter_bug.cgi?product=xorg], [libXfont])
 AC_CONFIG_SRCDIR([Makefile.am])

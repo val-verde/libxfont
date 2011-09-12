@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
-            "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" >
+            "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+<!ENTITY % defs SYSTEM "defs.ent"> %defs;
+]>
 <!-- lifted from troff+ms by doclifter -->
 <!-- previous version was in xorg-docs/specs/Xserver/fontlib.ms -->
 
@@ -15,6 +18,7 @@
       <title>
 	The X Font Library
       </title>
+      <releaseinfo>X Version 11, Release &fullrelvers;</releaseinfo>
       <pubdate>July 27, 1991</pubdate>
       <authorgroup>
 	<author>

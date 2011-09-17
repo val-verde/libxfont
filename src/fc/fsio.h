@@ -110,9 +110,9 @@ typedef struct _fs_fpe_data {
     CARD32	brokenWriteTime;	/* time to retry broken write */
     CARD32	blockedConnectTime;	/* time to abort blocked connect */
     CARD32	brokenConnectionTime;	/* time to retry broken connection */
-    
+
     FSBlockDataPtr  blockedRequests;
-    
+
     struct _XtransConnInfo *trans_conn; /* transport connection object */
 }           FSFpeRec;
 

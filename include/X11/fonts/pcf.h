@@ -88,7 +88,7 @@ typedef struct _PCFTable {
 #define PCF_GLYPH_NAMES		    (1<<7)
 #define PCF_BDF_ACCELERATORS	    (1<<8)
 
-extern int pcfReadFont ( FontPtr pFont, FontFilePtr file, 
+extern int pcfReadFont ( FontPtr pFont, FontFilePtr file,
 			 int bit, int byte, int glyph, int scan );
 extern int pcfReadFontInfo ( FontInfoPtr pFontInfo, FontFilePtr file );
 extern int pcfWriteFont ( FontPtr pFont, FontFilePtr file );

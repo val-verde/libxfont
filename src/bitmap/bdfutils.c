@@ -276,7 +276,7 @@ static char *SpecialAtoms[] = {
 };
 
 Bool
-bdfSpecialProperty(FontPtr pFont, FontPropPtr prop, 
+bdfSpecialProperty(FontPtr pFont, FontPropPtr prop,
 		   char isString, bdfFileState *bdfState)
 {
     char      **special;

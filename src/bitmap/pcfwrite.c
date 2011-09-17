@@ -430,8 +430,8 @@ pcfWriteFont(FontPtr pFont, FontFilePtr file)
 	    pcfPutINT16(file, format, pFont->info.defaultCh);
 	    for (i = 0; i < nencodings; i++) {
 		if (ACCESSENCODING(bitmapFont->encoding,i))
-		    pcfPutINT16(file, format, 
-                                ACCESSENCODING(bitmapFont->encoding, i) - 
+		    pcfPutINT16(file, format,
+                                ACCESSENCODING(bitmapFont->encoding, i) -
                                   bitmapFont->metrics);
 		else
 		    pcfPutINT16(file, format, 0xFFFF);

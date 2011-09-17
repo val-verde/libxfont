@@ -44,7 +44,7 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
 
 */
-/* 
+/*
  * decompress - cat a compressed file
  */
 
@@ -93,7 +93,7 @@ static char_type magic_header[] = { "\037\235" };	/* 1F 9D */
 /*
  * the next two codes should not be changed lightly, as they must not
  * lie within the contiguous general code space.
- */ 
+ */
 #define FIRST	257	/* first free entry */
 #define	CLEAR	256	/* table clear output code */
 
@@ -153,7 +153,7 @@ BufFilePushCompressed (BufFilePtr f)
     }
     code = BufFileGet (f);
     if (code == BUFFILEEOF) return 0;
-    
+
     maxbits = code & BIT_MASK;
     if (maxbits > BITS || maxbits < 12)
 	return 0;
@@ -236,7 +236,7 @@ BufCompressedFill (BufFilePtr f)
 	code = getcode (file);
 	if (code == -1)
 	    break;
-    
+
     	if ( (code == CLEAR) && file->block_compress ) {
 	    for ( code = 255; code >= 0; code-- )
 	    	file->tab_prefix[code] = 0;
@@ -253,7 +253,7 @@ BufCompressedFill (BufFilePtr f)
 	    *stackp++ = finchar;
 	    code = oldcode;
     	}
-    
+
     	/*
      	 * Generate output characters in reverse order
      	 */
@@ -266,7 +266,7 @@ BufCompressedFill (BufFilePtr f)
     	}
 	finchar = file->tab_suffix[code];
 	*stackp++ = finchar;
-    
+
     	/*
      	 * Generate the new entry.
      	 */
@@ -274,7 +274,7 @@ BufCompressedFill (BufFilePtr f)
 	    file->tab_prefix[code] = (unsigned short)oldcode;
 	    file->tab_suffix[code] = finchar;
 	    file->free_ent = code+1;
-    	} 
+    	}
 	/*
 	 * Remember previous code.
 	 */
@@ -382,7 +382,7 @@ static int
 BufCompressedSkip (BufFilePtr f, int bytes)
 {
     int		    c;
-    while (bytes--) 
+    while (bytes--)
     {
 	c = BufFileGet(f);
 	if (c == BUFFILEEOF)
@@ -397,7 +397,7 @@ main (int argc, char *argv[])
 {
     BufFilePtr	    inputraw, input, output;
     int		    c;
-    
+
     inputraw = BufFileOpenRead (0);
     input = BufFilePushCompressed (inputraw);
     output = BufFileOpenWrite (1);

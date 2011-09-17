@@ -76,7 +76,7 @@ extern int  bdfFileLineNum;
 /***====================================================================***/
 
 static Bool
-bdfReadBitmap(CharInfoPtr pCI, FontFilePtr file, int bit, int byte, 
+bdfReadBitmap(CharInfoPtr pCI, FontFilePtr file, int bit, int byte,
 	      int glyph, int scan, CARD32 *sizes)
 {
     int         widthBits,
@@ -99,7 +99,7 @@ bdfReadBitmap(CharInfoPtr pCI, FontFilePtr file, int bit, int byte,
     if (widthBytes * height > 0) {
 	picture = malloc(widthBytes * height);
 	if (!picture) {
-          bdfError("Couldn't allocate picture (%d*%d)\n", widthBytes, height);        
+          bdfError("Couldn't allocate picture (%d*%d)\n", widthBytes, height);
 	    goto BAILOUT;
       }
     } else
@@ -247,7 +247,7 @@ bdfFreeFontBits(FontPtr pFont)
 
 
 static Bool
-bdfReadCharacters(FontFilePtr file, FontPtr pFont, bdfFileState *pState, 
+bdfReadCharacters(FontFilePtr file, FontPtr pFont, bdfFileState *pState,
 		  int bit, int byte, int glyph, int scan)
 {
     unsigned char *line;
@@ -515,7 +515,7 @@ bdfReadCharacters(FontFilePtr file, FontPtr pFont, bdfFileState *pState,
                         if (!bitmapFont->encoding[SEGMENT_MAJOR(i)])
                             goto BAILOUT;
                     }
-                    ACCESSENCODINGL(bitmapFont->encoding,i) = 
+                    ACCESSENCODINGL(bitmapFont->encoding,i) =
                         bdfEncoding[char_row][char_col];
                 }
                 i++;
@@ -782,7 +782,7 @@ bdfUnloadFont(FontPtr pFont)
 }
 
 int
-bdfReadFont(FontPtr pFont, FontFilePtr file, 
+bdfReadFont(FontPtr pFont, FontFilePtr file,
 	    int bit, int byte, int glyph, int scan)
 {
     bdfFileState state;
@@ -816,7 +816,7 @@ bdfReadFont(FontPtr pFont, FontFilePtr file,
       bdfError("Couldn't allocate bitmapExtra (%d)\n", sizeof(BitmapExtraRec));
         goto BAILOUT;
     }
-    
+
     bitmapFont->bitmapExtra->glyphNames = 0;
     bitmapFont->bitmapExtra->sWidths = 0;
 
@@ -836,7 +836,7 @@ bdfReadFont(FontPtr pFont, FontFilePtr file,
 	    cols = pFont->info.lastCol - pFont->info.firstCol + 1;
 	    r = r - pFont->info.firstRow;
 	    c = c - pFont->info.firstCol;
-	    bitmapFont->pDefault = ACCESSENCODING(bitmapFont->encoding, 
+	    bitmapFont->pDefault = ACCESSENCODING(bitmapFont->encoding,
                                                  r * cols + c);
 	}
     }
@@ -859,7 +859,7 @@ bdfReadFont(FontPtr pFont, FontFilePtr file,
         bdfError("Failed to add bitmap ink metrics\n");
         goto BAILOUT;
       }
-    }    
+    }
     if (bitmapFont->bitmapExtra)
 	bitmapFont->bitmapExtra->info.inkMetrics = pFont->info.inkMetrics;
 
@@ -924,7 +924,7 @@ bdfPadToTerminal(FontPtr pFont)
 
     bitmapFont = (BitmapFontPtr) pFont->fontPrivate;
 
-    bzero(&new, sizeof(CharInfoRec)); 
+    bzero(&new, sizeof(CharInfoRec));
     new.metrics.ascent = pFont->info.fontAscent;
     new.metrics.descent = pFont->info.fontDescent;
     new.metrics.leftSideBearing = 0;

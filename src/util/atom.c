@@ -146,7 +146,7 @@ NameEqual (const char *a, const char *b, int l)
 #pragma weak MakeAtom
 #endif
 
-weak Atom 
+weak Atom
 MakeAtom(char *string, unsigned len, int makeit)
 {
     AtomListPtr	a;
@@ -223,7 +223,7 @@ MakeAtom(char *string, unsigned len, int makeit)
 #pragma weak ValidAtom
 #endif
 
-weak int 
+weak int
 ValidAtom(Atom atom)
 {
     return (atom != None) && (atom <= lastAtom);

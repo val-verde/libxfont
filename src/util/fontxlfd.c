@@ -70,7 +70,7 @@ GetInt(char *ptr, int *val)
 #ifndef NO_LOCALE
 static struct lconv *locale = 0;
 #endif
-static char *radix = ".", *plus = "+", *minus = "-";
+static const char *radix = ".", *plus = "+", *minus = "-";
 
 static char *
 readreal(char *ptr, double *result)

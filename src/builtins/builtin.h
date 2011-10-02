@@ -36,7 +36,7 @@ typedef struct _BuiltinFile {
 } BuiltinFileRec, *BuiltinFilePtr;
 
 typedef struct _BuiltinDir {
-    char	*file_name;
+    const char	*file_name;
     char	*font_name;
 } BuiltinDirRec, *BuiltinDirPtr;
 

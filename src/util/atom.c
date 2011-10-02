@@ -54,7 +54,7 @@ static int	    reverseMapSize;
 static Atom	    lastAtom;
 
 static int
-Hash(char *string, int len)
+Hash(const char *string, int len)
 {
     int	h;
 
@@ -147,7 +147,7 @@ NameEqual (const char *a, const char *b, int l)
 #endif
 
 weak Atom
-MakeAtom(char *string, unsigned len, int makeit)
+MakeAtom(const char *string, unsigned len, int makeit)
 {
     AtomListPtr	a;
     int		hash;

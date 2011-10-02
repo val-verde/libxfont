@@ -102,12 +102,12 @@ FontFileFreeTable (FontTablePtr table)
 }
 
 FontDirectoryPtr
-FontFileMakeDir(char *dirName, int size)
+FontFileMakeDir(const char *dirName, int size)
 {
     FontDirectoryPtr	dir;
     int			dirlen;
     int			needslash = 0;
-    char		*attrib;
+    const char		*attrib;
     int			attriblen;
 
 #if !defined(WIN32)

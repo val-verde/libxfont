@@ -43,9 +43,9 @@ THE SOFTWARE.
 static int find_cmap(int, int, int, FT_Face, FT_CharMap *);
 
 static int
-FTEncFontSpecific(char *encoding)
+FTEncFontSpecific(const char *encoding)
 {
-    char *p = encoding;
+    const char *p = encoding;
 
     if(strcasecmp(encoding, "microsoft-symbol") == 0)
         return 1;
@@ -69,7 +69,7 @@ FTPickMapping(char *xlfd, int length, char *filename, FT_Face face,
     int ftrc;
     int symbol = 0;
     const char *enc, *reg;
-    char *encoding_name = 0;
+    const char *encoding_name = 0;
     char buf[20];
 
     if(xlfd)

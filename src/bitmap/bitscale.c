@@ -78,7 +78,7 @@ enum scaleType {
 };
 
 typedef struct _fontProp {
-    char       *name;
+    const char *name;
     Atom        atom;
     enum scaleType type;
 } fontProp;

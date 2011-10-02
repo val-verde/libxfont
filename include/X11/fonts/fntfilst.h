@@ -124,7 +124,7 @@ typedef struct _FontDirectory {
 #define CAP_CHARSUBSETTING	0x2
 
 typedef struct _FontRenderer {
-    char    *fileSuffix;
+    const char    *fileSuffix;
     int	    fileSuffixLen;
     int	    (*OpenBitmap)(FontPathElementPtr /* fpe */,
 			  FontPtr * /* pFont */,

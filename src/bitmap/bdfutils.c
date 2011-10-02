@@ -68,7 +68,7 @@ int bdfFileLineNum;
 /***====================================================================***/
 
 void
-bdfError(char* message, ...)
+bdfError(const char* message, ...)
 {
     va_list args;
 
@@ -81,7 +81,7 @@ bdfError(char* message, ...)
 /***====================================================================***/
 
 void
-bdfWarning(char *message, ...)
+bdfWarning(const char *message, ...)
 {
     va_list args;
 
@@ -127,7 +127,7 @@ bdfGetLine(FontFilePtr file, unsigned char *buf, int len)
 /***====================================================================***/
 
 Atom
-bdfForceMakeAtom(char *str, int *size)
+bdfForceMakeAtom(const char *str, int *size)
 {
     register int len = strlen(str);
     Atom the_atom;
@@ -249,7 +249,7 @@ bdfHexByte(unsigned char *s)
  * check for known special property values
  */
 
-static char *SpecialAtoms[] = {
+static const char *SpecialAtoms[] = {
     "FONT_ASCENT",
 #define BDF_FONT_ASCENT	0
     "FONT_DESCENT",
@@ -279,8 +279,8 @@ Bool
 bdfSpecialProperty(FontPtr pFont, FontPropPtr prop,
 		   char isString, bdfFileState *bdfState)
 {
-    char      **special;
-    char       *name;
+    const char      **special;
+    const char       *name;
 
     name = NameForAtom(prop->name);
     for (special = SpecialAtoms; *special; special++)

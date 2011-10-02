@@ -94,7 +94,7 @@ static CharInfoRec noSuchChar = { /* metrics */{0,0,0,0,0,0},
 
 /* The propery names for all the XLFD properties. */
 
-static char *xlfd_props[] = {
+static const char *xlfd_props[] = {
     "FOUNDRY",
     "FAMILY_NAME",
     "WEIGHT_NAME",

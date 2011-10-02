@@ -369,7 +369,7 @@ _fs_io_fini (FSFpePtr conn)
 }
 
 static int
-_fs_do_write(FSFpePtr conn, char *data, long len, long size)
+_fs_do_write(FSFpePtr conn, const char *data, long len, long size)
 {
     if (size == 0) {
 #ifdef DEBUG
@@ -403,7 +403,7 @@ _fs_do_write(FSFpePtr conn, char *data, long len, long size)
  * Write the indicated bytes
  */
 int
-_fs_write (FSFpePtr conn, char *data, long len)
+_fs_write (FSFpePtr conn, const char *data, long len)
 {
     return _fs_do_write (conn, data, len, len);
 }
@@ -412,7 +412,7 @@ _fs_write (FSFpePtr conn, char *data, long len)
  * Write the indicated bytes adding any appropriate pad
  */
 int
-_fs_write_pad(FSFpePtr conn, char *data, long len)
+_fs_write_pad(FSFpePtr conn, const char *data, long len)
 {
     return _fs_do_write (conn, data, len, len + padlength[len & 3]);
 }

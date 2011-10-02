@@ -174,8 +174,9 @@ bdfGetPropertyValue(char *s)
     s++;
     pp = p = malloc((unsigned) strlen(s) + 1);
     if (pp == NULL) {
-  bdfError("Couldn't allocate property value string (%d)\n", strlen(s) + 1);
-  return None;
+	bdfError("Couldn't allocate property value string (%d)\n",
+		 (int) strlen(s) + 1);
+	return None;
     }
     while (*s) {
 	if (*s == '"') {
@@ -191,7 +192,7 @@ bdfGetPropertyValue(char *s)
 	*p++ = *s++;
     }
     free (pp);
-    bdfError("unterminated quoted string property: %s\n", (pointer) orig_s);
+    bdfError("unterminated quoted string property: %s\n", orig_s);
     return None;
 }
 

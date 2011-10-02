@@ -291,13 +291,13 @@ bdfReadCharacters(FontFilePtr file, FontPtr pFont, bdfFileState *pState,
     }
     if (nchars > INT32_MAX / sizeof(CharInfoRec)) {
 	bdfError("Couldn't allocate pCI (%d*%d)\n", nchars,
-		 sizeof(CharInfoRec));
+		 (int) sizeof(CharInfoRec));
 	goto BAILOUT;
     }
     ci = calloc(nchars, sizeof(CharInfoRec));
     if (!ci) {
 	bdfError("Couldn't allocate pCI (%d*%d)\n", nchars,
-		 sizeof(CharInfoRec));
+		 (int) sizeof(CharInfoRec));
 	goto BAILOUT;
     }
     bitmapFont->metrics = ci;
@@ -306,7 +306,7 @@ bdfReadCharacters(FontFilePtr file, FontPtr pFont, bdfFileState *pState,
 	bitmapExtra->glyphNames = malloc(nchars * sizeof(Atom));
 	if (!bitmapExtra->glyphNames) {
 	    bdfError("Couldn't allocate glyphNames (%d*%d)\n",
-		     nchars, sizeof(Atom));
+		     nchars, (int) sizeof(Atom));
 	    goto BAILOUT;
 	}
     }
@@ -314,7 +314,7 @@ bdfReadCharacters(FontFilePtr file, FontPtr pFont, bdfFileState *pState,
 	bitmapExtra->sWidths = malloc(nchars * sizeof(int));
 	if (!bitmapExtra->sWidths) {
 	    bdfError("Couldn't allocate sWidth (%d *%d)\n",
-		     nchars, sizeof(int));
+		     nchars, (int) sizeof(int));
 	    return FALSE;
 	}
     }
@@ -380,7 +380,7 @@ bdfReadCharacters(FontFilePtr file, FontPtr pFont, bdfFileState *pState,
 		bdfEncoding[char_row] = malloc(256 * sizeof(CharInfoPtr));
 		if (!bdfEncoding[char_row]) {
 		    bdfError("Couldn't allocate row %d of encoding (%d*%d)\n",
-			     char_row, INDICES, sizeof(CharInfoPtr));
+			     char_row, INDICES, (int) sizeof(CharInfoPtr));
 		    goto BAILOUT;
 		}
 		for (i = 0; i < 256; i++)
@@ -490,7 +490,7 @@ bdfReadCharacters(FontFilePtr file, FontPtr pFont, bdfFileState *pState,
     if (!bitmapFont->encoding) {
 	bdfError("Couldn't allocate ppCI (%d,%d)\n",
                  NUM_SEGMENTS(nencoding),
-                 sizeof(CharInfoPtr*));
+                 (int) sizeof(CharInfoPtr*));
 	goto BAILOUT;
     }
     pFont->info.allExist = TRUE;
@@ -610,14 +610,14 @@ bdfReadProperties(FontFilePtr file, FontPtr pFont, bdfFileState *pState)
     pFont->info.isStringProp = stringProps;
     if (stringProps == NULL) {
 	bdfError("Couldn't allocate stringProps (%d*%d)\n",
-		 (nProps + BDF_GENPROPS), sizeof(Bool));
+		 (nProps + BDF_GENPROPS), (int) sizeof(Bool));
 	goto BAILOUT;
     }
     pFont->info.props = props = calloc(nProps + BDF_GENPROPS,
 				       sizeof(FontPropRec));
     if (props == NULL) {
 	bdfError("Couldn't allocate props (%d*%d)\n", nProps + BDF_GENPROPS,
-						      sizeof(FontPropRec));
+						   (int) sizeof(FontPropRec));
 	goto BAILOUT;
     }
 
@@ -800,7 +800,8 @@ bdfReadFont(FontPtr pFont, FontFilePtr file,
 
     bitmapFont = calloc(1, sizeof(BitmapFontRec));
     if (!bitmapFont) {
-      bdfError("Couldn't allocate bitmapFontRec (%d)\n", sizeof(BitmapFontRec));
+	bdfError("Couldn't allocate bitmapFontRec (%d)\n",
+		 (int) sizeof(BitmapFontRec));
 	goto BAILOUT;
     }
 
@@ -813,7 +814,8 @@ bdfReadFont(FontPtr pFont, FontFilePtr file,
 
     bitmapFont->bitmapExtra = calloc(1, sizeof(BitmapExtraRec));
     if (!bitmapFont->bitmapExtra) {
-      bdfError("Couldn't allocate bitmapExtra (%d)\n", sizeof(BitmapExtraRec));
+	bdfError("Couldn't allocate bitmapExtra (%d)\n",
+		 (int) sizeof(BitmapExtraRec));
         goto BAILOUT;
     }
 

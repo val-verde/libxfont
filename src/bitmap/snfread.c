@@ -454,12 +454,14 @@ snfReadFontInfo(FontInfoPtr pFontInfo, FontFilePtr file)
 
     pFontInfo->props = malloc(fi.nProps * sizeof(FontPropRec));
     if (!pFontInfo->props) {
-      snfError("snfReadFontInfo(): Couldn't allocate props (%d*%d)\n", fi.nProps, sizeof(FontPropRec));
+	snfError("snfReadFontInfo(): Couldn't allocate props (%d*%d)\n",
+		 fi.nProps, (int) sizeof(FontPropRec));
 	return AllocError;
     }
     pFontInfo->isStringProp = malloc(fi.nProps * sizeof(char));
     if (!pFontInfo->isStringProp) {
-      snfError("snfReadFontInfo(): Couldn't allocate isStringProp (%d*%d)\n", fi.nProps, sizeof(char));
+	snfError("snfReadFontInfo(): Couldn't allocate isStringProp (%d*%d)\n",
+		 fi.nProps, (int) sizeof(char));
 	free(pFontInfo->props);
 	return AllocError;
     }

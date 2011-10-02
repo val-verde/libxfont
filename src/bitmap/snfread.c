@@ -60,7 +60,7 @@ from The Open Group.
 
 #include <stdarg.h>
 
-static void
+static void _X_ATTRIBUTE_PRINTF(1, 2)
 snfError(const char* message, ...)
 {
     va_list args;

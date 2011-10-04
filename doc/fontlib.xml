@@ -140,10 +140,8 @@
       source code, so have a listing handy.
     </para>
 
-    <sect1 id='requirements_for_the_font_library'>
-      <title>
-	Requirements for the Font library
-      </title>
+    <sect1 id='Requirements_for_the_Font_library'>
+<title>Requirements for the Font library</title>
 
       <para>
 	To avoid miles of duplicate code in the X server, the font server
@@ -181,10 +179,8 @@
 
     </sect1>
 
-    <sect1 id='general_font_library_interface_details'>
-      <title>
-	General Font Library Interface details.
-      </title>
+    <sect1 id='General_Font_Library_Interface_details'>
+<title>General Font Library Interface details.</title>
 
       <para>
 	To avoid collision between the #define name space for errors, the Font
@@ -213,10 +209,8 @@
 
     </sect1>
 
-    <sect1 id='font_path_elements'>
-      <title>
-	Font Path Elements
-      </title>
+    <sect1 id='Font_Path_Elements'>
+<title>Font Path Elements</title>
 
       <para>
 	At the center of the general font access methods used by X and
@@ -273,9 +267,7 @@ typedef struct _FPEFunctions {
       </para>
 
       <sect2 id='name_check'>
-	<title>
-	  (*name_check)
-	</title>
+	<title>(*name_check)</title>
 
 	<para>
 	  Each new font path member is passed to this function; if
@@ -290,9 +282,7 @@ typedef struct _FPEFunctions {
       </sect2>
 
       <sect2 id='init_fpe'>
-	<title>
-	  (*init_fpe)
-	</title>
+	<title>(*init_fpe)</title>
 
 	<para>
 	  Initialize a new font path element.  This function prepares
@@ -309,9 +299,7 @@ typedef struct _FPEFunctions {
       </sect2>
 
       <sect2 id='reset_fpe'>
-	<title>
-	  (*reset_fpe)
-	</title>
+	<title>(*reset_fpe)</title>
 
 	<para>
 	  When the X font path is reset, and some of the new members
@@ -328,9 +316,7 @@ typedef struct _FPEFunctions {
       </sect2>
 
       <sect2 id='free_fpe'>
-	<title>
-	  (*free_fpe)
-	</title>
+	<title>(*free_fpe)</title>
 
 	<para>
 	  When the server is finished with an FPE, this function is
@@ -341,9 +327,7 @@ typedef struct _FPEFunctions {
       </sect2>
 
       <sect2 id='open_font'>
-	<title>
-	  (*open_font)
-	</title>
+	<title>(*open_font)</title>
 
 	<para>
 	  This routine requests that a font be opened.  The <parameter
@@ -379,9 +363,7 @@ typedef struct _FPEFunctions {
       </sect2>
 
       <sect2 id='close_font'>
-	<title>
-	  (*close_font)
-	</title>
+	<title>(*close_font)</title>
 
 	<para>
 	  When the server is finished with a font, this routine
@@ -391,9 +373,7 @@ typedef struct _FPEFunctions {
       </sect2>
 
       <sect2 id='list_fonts'>
-	<title>
-	  (*list_fonts)
-	</title>
+	<title>(*list_fonts)</title>
 
 	<para>
 	  The <parameter class='function'>paths</parameter> argument is
@@ -406,9 +386,7 @@ typedef struct _FPEFunctions {
       </sect2>
 
       <sect2 id='start_list_fonts_with_info'>
-	<title>
-	  (*start_list_fonts_with_info)
-	</title>
+	<title>(*start_list_fonts_with_info)</title>
 
 	<para>
 	  This routine sets any internal state for a verbose listing of
@@ -418,9 +396,7 @@ typedef struct _FPEFunctions {
       </sect2>
 
       <sect2 id='list_next_font_with_info'>
-	<title>
-	  (*list_next_font_with_info)
-	</title>
+	<title>(*list_next_font_with_info)</title>
 
 	<para>
 	  To avoid storing huge amounts of data, the interface for
@@ -446,9 +422,7 @@ typedef struct _FPEFunctions {
       </sect2>
 
       <sect2 id='wakeup_fpe'>
-	<title>
-	  (*wakeup_fpe)
-	</title>
+	<title>(*wakeup_fpe)</title>
 
 	<para>
 	  Whenever an FPE function has returned
@@ -462,9 +436,7 @@ typedef struct _FPEFunctions {
       </sect2>
 
       <sect2 id='client_died'>
-	<title>
-	  (*client_died)
-	</title>
+	<title>(*client_died)</title>
 
 	<para>
 	  When an FPE function has returned <errorname>Suspended</errorname>
@@ -475,10 +447,8 @@ typedef struct _FPEFunctions {
       </sect2>
     </sect1>
 
-    <sect1 id='fonts'>
-      <title>
-	Fonts
-      </title>
+    <sect1 id='Fonts'>
+<title>Fonts</title>
 
       <para>
 	The data structure which actually contains the font information has
@@ -580,9 +550,7 @@ typedef struct _Font {
       </para>
 
       <sect2 id='get_glyphs'>
-	<title>
-	  (*get_glyphs)
-	</title>
+	<title>(*get_glyphs)</title>
 
 	<para>
 	  This routine returns <structname>CharInfoPtrs</structname>
@@ -596,9 +564,7 @@ typedef struct _Font {
       </sect2>
 
       <sect2 id='get_metrics'>
-	<title>
-	  (*get_metrics)
-	</title>
+	<title>(*get_metrics)</title>
 
 	<para>
 	  This is similar to <structfield>(*get_glyphs)</structfield>
@@ -608,10 +574,8 @@ typedef struct _Font {
 	</para>
       </sect2>
 
-      <sect2 id='getbitmaps'>
-	<title>
-	  (*get_bitmaps)
-	</title>
+      <sect2 id='get_bitmaps'>
+<title>(*get_bitmaps)</title>
 
 	<para>
 	  This packs the glyph image data in the requested
@@ -622,9 +586,7 @@ typedef struct _Font {
       </sect2>
 
       <sect2 id='get_extents'>
-	<title>
-	  (*get_extents)
-	</title>
+	<title>(*get_extents)</title>
 
 	<para>
 	  This returns the metrics for the specified font from the
@@ -634,9 +596,7 @@ typedef struct _Font {
       </sect2>
 
       <sect2 id='unload_font'>
-	<title>
-	  (*unload_font)
-	</title>
+	<title>(*unload_font)</title>
 
 	<para>
 	  This is called from the FPE routine
@@ -645,10 +605,8 @@ typedef struct _Font {
 	</para>
       </sect2>
 
-      <sect2 id='maxprivate'>
-	<title>
-	  maxPrivate
-	</title>
+      <sect2 id='maxPrivate'>
+<title>maxPrivate</title>
 
 	<para>
 	  When initializing a new font structure,

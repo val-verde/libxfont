@@ -124,14 +124,6 @@ typedef struct _compressedFILE {
 } CompressedFile;
 
 
-static int hsize_table[] = {
-    5003,	/* 12 bits - 80% occupancy */
-    9001,	/* 13 bits - 91% occupancy */
-    18013,	/* 14 bits - 91% occupancy */
-    35023,	/* 15 bits - 94% occupancy */
-    69001	/* 16 bits - 95% occupancy */
-};
-
 static int BufCompressedClose ( BufFilePtr f, int doClose );
 static int BufCompressedFill ( BufFilePtr f );
 static code_int getcode ( CompressedFile *file );
@@ -142,7 +134,6 @@ BufFilePushCompressed (BufFilePtr f)
 {
     int		    code;
     int		    maxbits;
-    int		    hsize;
     CompressedFile  *file;
     int		    extra;
 
@@ -155,11 +146,10 @@ BufFilePushCompressed (BufFilePtr f)
     if (code == BUFFILEEOF) return 0;
 
     maxbits = code & BIT_MASK;
-    if (maxbits > BITS || maxbits < 12)
+    if (maxbits > BITS || maxbits <= INIT_BITS)
 	return 0;
-    hsize = hsize_table[maxbits - 12];
     extra = (1 << maxbits) * sizeof (char_type) +
-	    hsize * sizeof (unsigned short);
+	    (1 << maxbits) * sizeof (unsigned short);
     file = malloc (sizeof (CompressedFile) + extra);
     if (!file)
 	return 0;

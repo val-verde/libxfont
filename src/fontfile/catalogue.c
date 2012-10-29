@@ -27,6 +27,8 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+
+#ifdef HAVE_READLINK
 #include <X11/fonts/fntfilst.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -474,3 +476,5 @@ CatalogueRegisterLocalFpeFunctions (void)
 			 CatalogueListNextFontOrAlias,
 			 FontFileEmptyBitmapSource);
 }
+
+#endif /* HAVE_READLINK */

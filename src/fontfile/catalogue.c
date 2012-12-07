@@ -192,7 +192,7 @@ CatalogueRescan (FontPathElementPtr fpe, Bool forceScan)
 	subfpe->type = fpe->type;
 	subfpe->name_length = len;
 	subfpe->name = malloc (len + 1);
-	if (subfpe == NULL)
+	if (subfpe->name == NULL)
 	{
 	    free(subfpe);
 	    continue;

@@ -2204,7 +2204,7 @@ FreeTypeSetUpTTCap( char *fileName, FontScalablePtr vals,
 		strcpy(*dynStrRealFileName+dirLen, p2+1);
 		capHead = p1;
 	    } else {
-		*dynStrRealFileName = xstrdup(fileName);
+		*dynStrRealFileName = strdup(fileName);
 		if( *dynStrRealFileName == NULL ) {
 		    result = AllocError;
 		    goto quit;
@@ -2549,7 +2549,7 @@ FreeTypeSetUpTTCap( char *fileName, FontScalablePtr vals,
     if (SPropRecValList_search_record(&listPropRecVal,
 				      &contRecValue,
 				      "CodeRange")) {
-	*dynStrTTCapCodeRange = xstrdup(SPropContainer_value_str(contRecValue));
+	*dynStrTTCapCodeRange = strdup(SPropContainer_value_str(contRecValue));
 	if( *dynStrTTCapCodeRange == NULL ) {
 	    result = AllocError;
 	    goto quit;

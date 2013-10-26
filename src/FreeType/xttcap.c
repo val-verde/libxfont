@@ -682,24 +682,4 @@ SPropRecValList_add_by_font_cap(SDynPropRecValList *pThisList,
     return result;
 }
 
-
-/**************************************************************************
-  Functions (xttmisc)
- */
-
-/* strdup clone with using the allocator of X server */
-char *
-XttXstrdup(char const *str)
-{
-    char *result;
-
-    result = malloc(strlen(str)+1);
-
-    if (result)
-        strcpy(result, str);
-
-    return result;
-}
-
-
 /* end of file */

@@ -2289,13 +2289,11 @@ FreeTypeSetUpTTCap( char *fileName, FontScalablePtr vals,
 	    }
 	}
 	else{
-	    *dynStrFTFileName = malloc(strlen(*dynStrRealFileName)+1);
+	    *dynStrFTFileName = strdup(*dynStrRealFileName);
 	    if( *dynStrFTFileName == NULL ){
 		result = AllocError;
 		goto quit;
 	    }
-	    **dynStrFTFileName = '\0';
-	    strcat(*dynStrFTFileName,*dynStrRealFileName);
 	}
     }
     /*

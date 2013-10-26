@@ -234,14 +234,13 @@ SPropRecValList_add_record(SDynPropRecValList *pThisList,
             {
                 char *p;
 
-                if (NULL == (p = malloc(strlen(strValue)+1))) {
+                if (NULL == (p = strdup(strValue))) {
                     fprintf(stderr,
                             "truetype font property : "
                             "cannot allocate memory.\n");
                     result = True;
                     goto quit;
                 }
-                strcpy(p, strValue);
                 SPropContainer_value_str(&tmpContainerE) = p;
             }
             break;

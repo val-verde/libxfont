@@ -137,7 +137,7 @@ static void
 _fs_close_server (FSFpePtr conn);
 
 static FSFpePtr
-_fs_init_conn (char *servername);
+_fs_init_conn (const char *servername);
 
 static int
 _fs_wait_connect (FSFpePtr conn);
@@ -212,7 +212,7 @@ _fs_add_rep_log (FSFpePtr conn, fsGenericReply *rep)
 #endif
 
 static Bool
-fs_name_check(char *name)
+fs_name_check(const char *name)
 {
     /* Just make sure there is a protocol/ prefix */
     return (name && *name != '/' && strchr(name, '/'));
@@ -270,7 +270,7 @@ static int
 fs_init_fpe(FontPathElementPtr fpe)
 {
     FSFpePtr    conn;
-    char       *name;
+    const char  *name;
     int         err;
     int		ret;
 
@@ -1517,7 +1517,7 @@ _fs_do_blocked (FSFpePtr conn)
 /* ARGSUSED */
 static int
 fs_send_open_font(pointer client, FontPathElementPtr fpe, Mask flags,
-		  char *name, int namelen,
+		  const char *name, int namelen,
 		  fsBitmapFormat format, fsBitmapFormatMask fmask,
 		  XID id, FontPtr *ppfont)
 {
@@ -1709,7 +1709,7 @@ fs_send_query_bitmaps(FontPathElementPtr fpe, FSBlockDataPtr blockrec)
 /* ARGSUSED */
 static int
 fs_open_font(pointer client, FontPathElementPtr fpe, Mask flags,
-	     char *name, int namelen,
+	     const char *name, int namelen,
 	     fsBitmapFormat format, fsBitmapFormatMask fmask,
 	     XID id, FontPtr *ppfont,
 	     char **alias, FontPtr non_cachable_font)
@@ -2259,7 +2259,7 @@ fs_read_list(FontPathElementPtr fpe, FSBlockDataPtr blockrec)
 }
 
 static int
-fs_send_list_fonts(pointer client, FontPathElementPtr fpe, char *pattern,
+fs_send_list_fonts(pointer client, FontPathElementPtr fpe, const char *pattern,
 		   int patlen, int maxnames, FontNamesPtr newnames)
 {
     FSFpePtr		conn = (FSFpePtr) fpe->private;
@@ -2315,7 +2315,7 @@ fs_send_list_fonts(pointer client, FontPathElementPtr fpe, char *pattern,
 
 static int
 fs_list_fonts(pointer client, FontPathElementPtr fpe,
-	      char *pattern, int patlen, int maxnames, FontNamesPtr newnames)
+	      const char *pattern, int patlen, int maxnames, FontNamesPtr newnames)
 {
     FSFpePtr		conn = (FSFpePtr) fpe->private;
     FSBlockDataPtr	blockrec;
@@ -2429,7 +2429,7 @@ done:
 /* ARGSUSED */
 static int
 fs_start_list_with_info(pointer client, FontPathElementPtr fpe,
-			char *pattern, int len, int maxnames, pointer *pdata)
+			const char *pattern, int len, int maxnames, pointer *pdata)
 {
     FSFpePtr		    conn = (FSFpePtr) fpe->private;
     FSBlockDataPtr	    blockrec;
@@ -3145,7 +3145,7 @@ _fs_start_reconnect (FSFpePtr conn)
 
 
 static FSFpePtr
-_fs_init_conn (char *servername)
+_fs_init_conn (const char *servername)
 {
     FSFpePtr	conn;
 

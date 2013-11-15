@@ -751,6 +751,8 @@ compute_xform_matrix(FontScalablePtr vals, double dx, double dy,
  *  ScaleFont
  *  returns a pointer to the new scaled font, or NULL (due to AllocError).
  */
+#pragma GCC diagnostic ignored "-Wbad-function-cast"
+
 static FontPtr
 ScaleFont(FontPtr opf,            /* originating font */
 	  double widthMult, 	  /* glyphs width scale factor */
@@ -811,8 +813,6 @@ ScaleFont(FontPtr opf,            /* originating font */
        needs to be for the output font */
     if (vals->nranges)
     {
-	int i;
-
 	pfi->allExist = 0;
 	firstCol = 255;
 	lastCol = 0;

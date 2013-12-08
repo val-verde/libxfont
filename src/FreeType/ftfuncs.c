@@ -2050,7 +2050,7 @@ restrict_code_range_by_str(int count,unsigned short *refFirstCol,
 {
     int nRanges = 0;
     int result = 0;
-    fsRange *ranges = NULL;
+    fsRange *ranges = NULL, *oldRanges;
     char const *p, *q;
 
     p = q = str;
@@ -2119,10 +2119,13 @@ restrict_code_range_by_str(int count,unsigned short *refFirstCol,
         fflush(stderr);
 #endif
         nRanges++;
+        oldRanges = ranges;
         ranges = realloc(ranges, nRanges*sizeof(*ranges));
-        if (NULL == ranges)
+        if (NULL == ranges) {
+            free(oldRanges);
             break;
-        {
+        }
+        else {
             fsRange *r = ranges+nRanges-1;
 
             r->min_char_low = minpoint & 0xff;

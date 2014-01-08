@@ -2964,6 +2964,7 @@ _fs_send_cat_sync (FSFpePtr conn)
      * by a bogus catalogue
      */
     lcreq.reqType = FS_ListCatalogues;
+    lcreq.data = 0;
     lcreq.length = (SIZEOF(fsListCataloguesReq)) >> 2;
     lcreq.maxNames = 0;
     lcreq.nbytes = 0;

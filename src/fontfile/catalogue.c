@@ -332,11 +332,6 @@ CatalogueListFonts (pointer client, FontPathElementPtr fpe, char *pat,
     return Successful;
 }
 
-int
-FontFileStartListFonts(pointer client, FontPathElementPtr fpe,
-		       char *pat, int len, int max,
-		       pointer *privatep, int mark_aliases);
-
 typedef struct _LFWIData {
     pointer		*privates;
     int			current;

@@ -64,9 +64,8 @@ PKG_PROG_PKG_CONFIG
 XFONT_FONTFILE=no
 
 #
-# Scalable fonts in files:
-# 	FreeType
-#	Bitstream Speedo rasterizer
+# FreeType for all scalable (OpenType, TrueType, PostScript) and
+# some bitmap formats (BDF & PCF)
 #
 AC_ARG_ENABLE(freetype, [ --disable-freetype],[XFONT_FREETYPE=$enableval],[XFONT_FREETYPE=yes])
 AM_CONDITIONAL(XFONT_FREETYPE, [test x$XFONT_FREETYPE = xyes])

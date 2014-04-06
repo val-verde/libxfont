@@ -44,7 +44,7 @@ from The Open Group.
 #endif
 
 /* Should get this from elsewhere */
-extern unsigned long serverGeneration;
+extern unsigned long __GetServerGeneration(void);
 
 static void bitmapUnloadScalable (FontPtr pFont);
 static void ScaleBitmap ( FontPtr pFont, CharInfoPtr opci,
@@ -581,9 +581,9 @@ ComputeScaledProperties(FontInfoPtr sourceFontInfo, /* the font to be scaled */
     char	*isStringProp;
     int		nProps;
 
-    if (bitscaleGeneration != serverGeneration) {
+    if (bitscaleGeneration != __GetServerGeneration()) {
 	initFontPropTable();
-	bitscaleGeneration = serverGeneration;
+	bitscaleGeneration = __GetServerGeneration();
     }
     nProps = NPROPS + 1 + sizeof(fontPropTable) / sizeof(fontProp) +
 			  sizeof(rawFontPropTable) / sizeof(fontProp);

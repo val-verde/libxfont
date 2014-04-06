@@ -2161,7 +2161,7 @@ fs_send_load_glyphs(pointer client, FontPtr pfont,
 }
 
 
-extern pointer serverClient;	/* This could be any number that
+extern pointer __GetServerClient(void);	/* This could be any number that
 				   doesn't conflict with existing
 				   client values. */
 
@@ -2333,17 +2333,17 @@ fs_load_all_glyphs(FontPtr pfont)
      * perform an unpleasant job that, we hope, will never be required.
      */
 
-    while ((err = _fs_load_glyphs(serverClient, pfont, TRUE, 0, 0, NULL)) ==
+    while ((err = _fs_load_glyphs(__GetServerClient(), pfont, TRUE, 0, 0, NULL)) ==
 	   Suspended)
     {
 	if (fs_await_reply (conn) != FSIO_READY)
 	{
 	    /* Get rid of blockrec */
-	    fs_client_died(serverClient, pfont->fpe);
+	    fs_client_died(__GetServerClient(), pfont->fpe);
 	    err = BadCharRange;
 	    break;
 	}
-	fs_read_reply (pfont->fpe, serverClient);
+	fs_read_reply (pfont->fpe, __GetServerClient());
     }
     return err;
 }

@@ -180,7 +180,7 @@ fi
 AC_CHECK_LIB(m, hypot, [MATH_LIBS=-lm
 AC_SUBST(MATH_LIBS)], AC_MSG_ERROR([*** libm is required]))
 
-PKG_CHECK_MODULES(XFONT, xproto xtrans fontsproto fontenc)
+PKG_CHECK_MODULES(XFONT, [xproto xtrans fontsproto >= 2.1.3 fontenc])
 
 # Transport selection macro from xtrans.m4
 XTRANS_CONNECTION_FLAGS

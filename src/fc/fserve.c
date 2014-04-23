@@ -1111,7 +1111,7 @@ fs_read_extent_info(FontPathElementPtr fpe, FSBlockDataPtr blockrec)
 }
 
 #ifdef DEBUG
-static char *fs_open_states[] = {
+static const char *fs_open_states[] = {
     "OPEN_REPLY  ",
     "INFO_REPLY  ",
     "EXTENT_REPLY",
@@ -1381,7 +1381,6 @@ fs_wakeup(FontPathElementPtr fpe, unsigned long *mask)
     {
 	FSBlockDataPtr	    blockrec;
 	FSBlockedFontPtr    bfont;
-	FSBlockedListPtr    blist;
 	static CARD32	    lastState;
 	static FSBlockDataPtr	lastBlock;
 
@@ -1405,7 +1404,6 @@ fs_wakeup(FontPathElementPtr fpe, unsigned long *mask)
 			 "<freed>");
 		break;
 	    case FS_LIST_FONTS:
-		blist = (FSBlockedListPtr) blockrec->data;
 		fprintf (stderr, "  Blocked list errcode %d sequence %d\n",
 			 blockrec->errcode, blockrec->sequenceNumber);
 		break;

@@ -34,22 +34,6 @@ from The Open Group.
 #include <config.h>
 #endif
 
-/*
- * Translate monolithic #defines to modular definitions
- */
-
-#ifdef PCFFORMAT
-#define XFONT_PCFFORMAT 1
-#endif
-
-#ifdef SNFFORMAT
-#define XFONT_SNFFORMAT 1
-#endif
-
-#ifdef BDFFORMAT
-#define XFONT_BDFFORMAT 1
-#endif
-
 #include <X11/fonts/fntfilst.h>
 #include <X11/fonts/bitmap.h>
 #include <X11/fonts/fontutil.h>

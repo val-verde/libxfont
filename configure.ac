@@ -153,6 +153,9 @@ if test "x$XFONT_PCFFORMAT" = xyes; then
 	XFONT_BITMAP=yes
 fi
 
+AM_CONDITIONAL(XFONT_PCF_OR_BUILTIN,
+	[test "x$XFONT_PCFFORMAT" = xyes -o "x$XFONT_BUILTINS" = xyes])
+
 AC_ARG_ENABLE(bdfformat,
 	AS_HELP_STRING([--disable-bdfformat],
 		[Support BDF format bitmap fonts (default: enabled)]),

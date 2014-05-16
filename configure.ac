@@ -164,9 +164,9 @@ if test "x$XFONT_BDFFORMAT" = xyes; then
 fi
 
 AC_ARG_ENABLE(snfformat,
-	AS_HELP_STRING([--disable-snfformat],
-		[Support SNF format bitmap fonts (default: enabled)]),
-	[XFONT_SNFFORMAT=$enableval], [XFONT_SNFFORMAT=yes])
+	AS_HELP_STRING([--enable-snfformat],
+		[Support SNF format bitmap fonts (default: disabled)]),
+	[XFONT_SNFFORMAT=$enableval], [XFONT_SNFFORMAT=no])
 AM_CONDITIONAL(XFONT_SNFFORMAT, [test "x$XFONT_SNFFORMAT" = xyes])
 if test "x$XFONT_SNFFORMAT" = xyes; then
 	AC_DEFINE(XFONT_SNFFORMAT,1,[Support snf format bitmap font files])

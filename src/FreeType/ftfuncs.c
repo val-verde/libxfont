@@ -2061,7 +2061,7 @@ restrict_code_range_by_str(int count,unsigned short *refFirstCol,
         long val;
 
         /* skip comma and/or space */
-        while (',' == *p || isspace(*p))
+        while (',' == *p || isspace((unsigned char)*p))
             p++;
 
         /* begin point */
@@ -2079,7 +2079,7 @@ restrict_code_range_by_str(int count,unsigned short *refFirstCol,
         }
 
         /* skip space */
-        while (isspace(*p))
+        while (isspace((unsigned char)*p))
             p++;
 
         if (',' != *p && '\0' != *p) {
@@ -2092,7 +2092,7 @@ restrict_code_range_by_str(int count,unsigned short *refFirstCol,
                 break;
 
             /* skip space */
-            while (isspace(*p))
+            while (isspace((unsigned char)*p))
                 p++;
 
             val = strtol(p, (char **)&q, 0);

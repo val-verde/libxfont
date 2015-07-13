@@ -426,7 +426,7 @@ bdfReadCharacters(FontFilePtr file, FontPtr pFont, bdfFileState *pState,
 	    goto BAILOUT;
 	}
 	/* xCharInfo metrics are stored as INT16 */
-	if ((wx < 0) || (wx > INT16_MAX)) {
+	if ((wx < INT16_MIN) || (wx > INT16_MAX)) {
 	    bdfError("character '%s' has out of range width, %d\n",
 		     charName, wx);
 	    goto BAILOUT;

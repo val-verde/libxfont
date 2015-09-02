@@ -7,7 +7,6 @@ AM_CFLAGS = $(XFONT_CFLAGS) $(OS_CFLAGS) $(CWARNFLAGS)
 noinst_LTLIBRARIES = libutil.la
 
 libutil_la_SOURCES = 		\
-	atom.c			\
 	fontaccel.c		\
 	fontnames.c		\
 	fontutil.c		\

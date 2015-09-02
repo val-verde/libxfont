@@ -53,6 +53,7 @@ in this Software without prior written authorization from The Open Group.
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include "libxfontint.h"
 
 #ifdef WIN32
 #define _WILLWINSOCK_
@@ -101,18 +102,14 @@ in this Software without prior written authorization from The Open Group.
 /* Somewhat arbitrary limit on maximum reply size we'll try to read. */
 #define MAX_REPLY_LENGTH	((64 * 1024 * 1024) >> 2)
 
-extern void ErrorF(const char *f, ...);
-
 static int fs_read_glyphs ( FontPathElementPtr fpe, FSBlockDataPtr blockrec );
 static int fs_read_list ( FontPathElementPtr fpe, FSBlockDataPtr blockrec );
 static int fs_read_list_info ( FontPathElementPtr fpe,
 			       FSBlockDataPtr blockrec );
 
-extern fd_set _fs_fd_mask;
+static void fs_block_handler ( void *wt );
 
-static void fs_block_handler ( pointer data, OSTimePtr wt,
-			       pointer LastSelectMask );
-static int fs_wakeup ( FontPathElementPtr fpe, unsigned long *mask );
+static int fs_wakeup ( FontPathElementPtr fpe );
 
 /*
  * List of all FPEs
@@ -147,7 +144,7 @@ static void
 _fs_close_server (FSFpePtr conn);
 
 static FSFpePtr
-_fs_init_conn (const char *servername);
+_fs_init_conn (const char *servername, FontPathElementPtr fpe);
 
 static int
 _fs_wait_connect (FSFpePtr conn);
@@ -166,6 +163,9 @@ _fs_free_conn (FSFpePtr conn);
 
 static int
 fs_free_fpe(FontPathElementPtr fpe);
+
+static void
+fs_fd_handler(int fd, void *data);
 
 /*
  * Font server access
@@ -305,12 +305,12 @@ fs_init_fpe(FontPathElementPtr fpe)
     if (*name == ':')
 	name++;			/* skip ':' */
 
-    conn = _fs_init_conn (name);
+    conn = _fs_init_conn (name, fpe);
     if (!conn)
 	err = AllocError;
     else
     {
-	err = init_fs_handlers (fpe, fs_block_handler);
+	err = init_fs_handlers2 (fpe, fs_block_handler);
 	if (err != Successful)
 	{
 	    _fs_free_conn (conn);
@@ -383,7 +383,7 @@ fs_free_fpe(FontPathElementPtr fpe)
     }
     _fs_unmark_block (conn, conn->blockState);
     fs_close_conn(conn);
-    remove_fs_handlers(fpe, fs_block_handler, fs_fpes == 0);
+    remove_fs_handlers2(fpe, fs_block_handler, fs_fpes == 0);
     _fs_free_conn (conn);
     fpe->private = (pointer) 0;
 
@@ -515,6 +515,24 @@ _fs_add_clients_depending(FSClientsDependingPtr *clients_depending, pointer clie
     return Suspended;
 }
 
+static void
+conn_start_listening(FSFpePtr conn)
+{
+    if (!conn->fs_listening) {
+	add_fs_fd(conn->fs_fd, fs_fd_handler, conn->fpe);
+	conn->fs_listening = TRUE;
+    }
+}
+
+static void
+conn_stop_listening(FSFpePtr conn)
+{
+    if (conn->fs_listening) {
+	remove_fs_fd(conn->fs_fd);
+	conn->fs_listening = FALSE;
+    }
+}
+
 /*
  * When a request is aborted due to a font server failure,
  * signal any depending clients to restart their dependant
@@ -546,7 +564,7 @@ _fs_clean_aborted_blockrec(FSFpePtr conn, FSBlockDataPtr blockrec)
 	FSBlockedListInfoPtr binfo;
 	binfo = (FSBlockedListInfoPtr) blockrec->data;
 	if (binfo->status == FS_LFWI_REPLY)
-	    FD_SET(conn->fs_fd, &_fs_fd_mask);
+	    conn_start_listening(conn);
 	_fs_free_props (&binfo->info);
     }
     default:
@@ -608,7 +626,7 @@ fs_get_reply (FSFpePtr conn, int *error)
     int		    ret;
 
     /* block if the connection is down or paused in lfwi */
-    if (conn->fs_fd == -1 || !FD_ISSET (conn->fs_fd, &_fs_fd_mask))
+    if (conn->fs_fd == -1 || !conn->fs_listening)
     {
 	*error = FSIO_BLOCK;
 	return 0;
@@ -655,7 +673,7 @@ fs_reply_ready (FSFpePtr conn)
 {
     fsGenericReply  *rep;
 
-    if (conn->fs_fd == -1 || !FD_ISSET (conn->fs_fd, &_fs_fd_mask))
+    if (conn->fs_fd == -1 || !conn->fs_listening)
 	return FALSE;
     if (fs_data_read (conn) < sizeof (fsGenericReply))
 	return FALSE;
@@ -1300,15 +1318,12 @@ _fs_unmark_block (FSFpePtr conn, CARD32 mask)
 
 /* ARGSUSED */
 static void
-fs_block_handler(pointer data, OSTimePtr wt, pointer LastSelectMask)
+fs_block_handler(void *wt)
 {
-    static struct timeval block_timeout;
     CARD32	now, earliest, wakeup;
     int		soonest;
     FSFpePtr    conn;
 
-    XFD_ORSET((fd_set *)LastSelectMask, (fd_set *)LastSelectMask,
-	      &_fs_fd_mask);
     /*
      * Flush all pending output
      */
@@ -1320,14 +1335,7 @@ fs_block_handler(pointer data, OSTimePtr wt, pointer LastSelectMask)
      * Check for any fpe with a complete reply, set sleep time to zero
      */
     if (fs_blockState & FS_COMPLETE_REPLY)
-    {
-	block_timeout.tv_sec = 0;
-	block_timeout.tv_usec = 0;
-	if (*wt == NULL)
-	    *wt = &block_timeout;
-	else
-	    **wt = block_timeout;
-    }
+	adjust_fs_wait_for_delay(wt, 0);
     /*
      * Walk through fpe list computing sleep time
      */
@@ -1368,12 +1376,7 @@ fs_block_handler(pointer data, OSTimePtr wt, pointer LastSelectMask)
 	soonest = earliest - now;
 	if (soonest < 0)
 	    soonest = 0;
-	block_timeout.tv_sec = soonest / 1000;
-	block_timeout.tv_usec = (soonest % 1000) * 1000;
-	if (*wt == NULL)
-	    *wt = &block_timeout;
-	else if (soonest < (*wt)->tv_sec * 1000 + (*wt)->tv_usec / 1000)
-	    **wt = block_timeout;
+	adjust_fs_wait_for_delay(wt, soonest);
     }
 }
 
@@ -1460,11 +1463,11 @@ fs_read_reply (FontPathElementPtr fpe, pointer client)
     }
 }
 
-static int
-fs_wakeup(FontPathElementPtr fpe, unsigned long *mask)
+static void
+fs_fd_handler(int fd, void *data)
 {
-    fd_set	    *LastSelectMask = (fd_set *) mask;
-    FSFpePtr	    conn = (FSFpePtr) fpe->private;
+    FontPathElementPtr	fpe = data;
+    FSFpePtr	    	conn = (FSFpePtr) fpe->private;
 
     /*
      * Don't continue if the fd is -1 (which will be true when the
@@ -1472,11 +1475,19 @@ fs_wakeup(FontPathElementPtr fpe, unsigned long *mask)
      */
     if ((conn->blockState & FS_RECONNECTING))
 	_fs_check_reconnect (conn);
-    else if ((conn->blockState & FS_COMPLETE_REPLY) ||
-	     (conn->fs_fd != -1 && FD_ISSET(conn->fs_fd, LastSelectMask)))
+    else if ((conn->fs_fd != -1))
 	fs_read_reply (fpe, 0);
+}
+
+static int
+fs_wakeup(FontPathElementPtr fpe)
+{
+    FSFpePtr	    conn = (FSFpePtr) fpe->private;
+
     if (conn->blockState & (FS_PENDING_REPLY|FS_BROKEN_CONNECTION|FS_BROKEN_WRITE))
 	_fs_do_blocked (conn);
+    if (conn->blockState & FS_COMPLETE_REPLY)
+	fs_read_reply (fpe, 0);
 #ifdef DEBUG
     {
 	FSBlockDataPtr	    blockrec;
@@ -2160,11 +2171,6 @@ fs_send_load_glyphs(pointer client, FontPtr pfont,
     return Suspended;
 }
 
-
-extern pointer __GetServerClient(void);	/* This could be any number that
-				   doesn't conflict with existing
-				   client values. */
-
 static int
 _fs_load_glyphs(pointer client, FontPtr pfont, Bool range_flag,
 		unsigned int nchars, int item_size, unsigned char *data)
@@ -2392,7 +2398,7 @@ fs_read_list(FontPathElementPtr fpe, FSBlockDataPtr blockrec)
 	    err = BadFontName;
 	    break;
 	}
-	err = AddFontNamesName(blist->names, data, length);
+	err = xfont2_add_font_names_name(blist->names, data, length);
 	if (err != Successful)
 	    break;
 	data += length;
@@ -2621,7 +2627,7 @@ fs_read_list_info(FontPathElementPtr fpe, FSBlockDataPtr blockrec)
 
     /* disable this font server until we've processed this response */
     _fs_unmark_block (conn, FS_COMPLETE_REPLY);
-    FD_CLR(conn->fs_fd, &_fs_fd_mask);
+    conn_stop_listening(conn);
 done:
     _fs_done_read (conn, rep->length << 2);
     return err;
@@ -2724,7 +2730,7 @@ fs_next_list_with_info(pointer client, FontPathElementPtr fpe,
     *numFonts = binfo->remaining;
 
     /* Restart reply processing from this font server */
-    FD_SET(conn->fs_fd, &_fs_fd_mask);
+    conn_start_listening(conn);
     if (fs_reply_ready (conn))
 	_fs_mark_block (conn, FS_COMPLETE_REPLY);
 
@@ -2887,7 +2893,7 @@ _fs_check_connect (FSFpePtr conn)
     switch (ret) {
     case FSIO_READY:
 	conn->fs_fd = _FontTransGetConnectionNumber (conn->trans_conn);
-	FD_SET (conn->fs_fd, &_fs_fd_mask);
+	conn_start_listening(conn);
 	break;
     case FSIO_BLOCK:
 	break;
@@ -3228,7 +3234,7 @@ _fs_close_server (FSFpePtr conn)
     }
     if (conn->fs_fd >= 0)
     {
-	FD_CLR (conn->fs_fd, &_fs_fd_mask);
+	conn_stop_listening(conn);
 	conn->fs_fd = -1;
     }
     conn->fs_conn_state = FS_CONN_UNCONNECTED;
@@ -3362,7 +3368,7 @@ _fs_start_reconnect (FSFpePtr conn)
 
 
 static FSFpePtr
-_fs_init_conn (const char *servername)
+_fs_init_conn (const char *servername, FontPathElementPtr fpe)
 {
     FSFpePtr	conn;
 
@@ -3377,6 +3383,7 @@ _fs_init_conn (const char *servername)
     conn->servername = (char *) (conn + 1);
     conn->fs_conn_state = FS_CONN_UNCONNECTED;
     conn->fs_fd = -1;
+    conn->fpe = fpe;
     strcpy (conn->servername, servername);
     return conn;
 }
@@ -3395,22 +3402,27 @@ _fs_free_conn (FSFpePtr conn)
  * called at server init time
  */
 
+static const xfont2_fpe_funcs_rec fs_fpe_funcs = {
+	.version = XFONT2_FPE_FUNCS_VERSION,
+	.name_check = fs_name_check,
+	.init_fpe = fs_init_fpe,
+	.free_fpe = fs_free_fpe,
+	.reset_fpe = fs_reset_fpe,
+	.open_font = fs_open_font,
+	.close_font = fs_close_font,
+	.list_fonts = fs_list_fonts,
+	.start_list_fonts_with_info = fs_start_list_with_info,
+	.list_next_font_with_info = fs_next_list_with_info,
+	.wakeup_fpe = fs_wakeup,
+	.client_died = fs_client_died,
+	.load_glyphs = _fs_load_glyphs,
+	.start_list_fonts_and_aliases = (StartLaFunc) 0,
+	.list_next_font_or_alias = (NextLaFunc) 0,
+	.set_path_hook = (SetPathFunc) 0
+};
+
 void
 fs_register_fpe_functions(void)
 {
-    RegisterFPEFunctions(fs_name_check,
-			 fs_init_fpe,
-			 fs_free_fpe,
-			 fs_reset_fpe,
-			 fs_open_font,
-			 fs_close_font,
-			 fs_list_fonts,
-			 fs_start_list_with_info,
-			 fs_next_list_with_info,
-			 fs_wakeup,
-			 fs_client_died,
-			 _fs_load_glyphs,
-			 NULL,
-			 NULL,
-			 NULL);
+    register_fpe_funcs(&fs_fpe_funcs);
 }

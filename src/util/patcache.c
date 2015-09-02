@@ -31,6 +31,7 @@ in this Software without prior written authorization from The Open Group.
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include "libxfontint.h"
 #include    <X11/fonts/fontmisc.h>
 #include    <X11/fonts/fontstruct.h>
 
@@ -55,15 +56,15 @@ typedef struct _FontPatternCacheEntry {
     FontPtr			    pFont;	/* associated font */
 } FontPatternCacheEntryRec, *FontPatternCacheEntryPtr;
 
-typedef struct _FontPatternCache {
+typedef struct _xfont2_pattern_cache {
     FontPatternCacheEntryPtr	buckets[NBUCKETS];
     FontPatternCacheEntryRec	entries[NENTRIES];
     FontPatternCacheEntryPtr	free;
-} FontPatternCacheRec;
+} xfont2_pattern_cache_rec;
 
 /* Empty cache (for rehash) */
 void
-EmptyFontPatternCache (FontPatternCachePtr cache)
+xfont2_empty_font_pattern_cache(xfont2_pattern_cache_ptr cache)
 {
     int	    i;
 
@@ -83,10 +84,10 @@ EmptyFontPatternCache (FontPatternCachePtr cache)
 }
 
 /* Create and initialize cache */
-FontPatternCachePtr
-MakeFontPatternCache (void)
+xfont2_pattern_cache_ptr
+xfont2_make_font_pattern_cache(void)
 {
-    FontPatternCachePtr	cache;
+    xfont2_pattern_cache_ptr	cache;
     int			i;
     cache = malloc (sizeof *cache);
     if (!cache)
@@ -96,13 +97,13 @@ MakeFontPatternCache (void)
 	cache->entries[i].pattern = 0;
 	cache->entries[i].pFont = 0;
     }
-    EmptyFontPatternCache (cache);
+    xfont2_empty_font_pattern_cache (cache);
     return cache;
 }
 
 /* toss cache */
 void
-FreeFontPatternCache (FontPatternCachePtr cache)
+xfont2_free_font_pattern_cache(xfont2_pattern_cache_ptr cache)
 {
     int	    i;
 
@@ -127,10 +128,10 @@ Hash (const char *string, int len)
 
 /* add entry */
 void
-CacheFontPattern (FontPatternCachePtr cache,
-		  const char *pattern,
-		  int patlen,
-		  FontPtr pFont)
+xfont2_cache_font_pattern(xfont2_pattern_cache_ptr cache,
+			  const char * pattern,
+			  int patlen,
+			  FontPtr pFont)
 {
     FontPatternCacheEntryPtr	e;
     char			*newpat;
@@ -173,9 +174,9 @@ CacheFontPattern (FontPatternCachePtr cache,
 
 /* find matching entry */
 FontPtr
-FindCachedFontPattern (FontPatternCachePtr cache,
-		       const char *pattern,
-		       int patlen)
+xfont2_find_cached_font_pattern(xfont2_pattern_cache_ptr cache,
+				const char * pattern,
+				int patlen)
 {
     int				hash;
     int				i;
@@ -195,8 +196,8 @@ FindCachedFontPattern (FontPatternCachePtr cache,
 }
 
 void
-RemoveCachedFontPattern (FontPatternCachePtr cache,
-			 FontPtr pFont)
+xfont2_remove_cached_font_pattern(xfont2_pattern_cache_ptr cache,
+				  FontPtr pFont)
 {
     FontPatternCacheEntryPtr	e;
     int				i;

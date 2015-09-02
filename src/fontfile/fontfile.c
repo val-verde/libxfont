@@ -31,6 +31,7 @@ in this Software without prior written authorization from The Open Group.
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include "libxfontint.h"
 #include <X11/fonts/fntfilst.h>
 #include <X11/keysym.h>
 #ifdef WIN32
@@ -629,7 +630,7 @@ _FontFileAddScalableNames(FontNamesPtr names, FontNamesPtr scaleNames,
 	       Otherwise we're done.  */
 	    if (scaleNames->length[i] >= 0)
 	    {
-		(void) AddFontNamesName (names, nameChars,
+		(void) xfont2_add_font_names_name (names, nameChars,
 					 strlen (nameChars));
 		/* If our original pattern matches the name from
 		   the table and that name doesn't duplicate what
@@ -641,7 +642,7 @@ _FontFileAddScalableNames(FontNamesPtr names, FontNamesPtr scaleNames,
 		    *max)
 		{
 		    --*max;
-		    (void) AddFontNamesName (names, scaleNames->names[i],
+		    (void) xfont2_add_font_names_name (names, scaleNames->names[i],
 					     scaleNames->length[i]);
 		}
 	    }
@@ -655,11 +656,11 @@ _FontFileAddScalableNames(FontNamesPtr names, FontNamesPtr scaleNames,
 					     scaleNames->names[++i],
 					     &aliasName, vals))
 		{
-		    (void) AddFontNamesName (names, nameChars,
+		    (void) xfont2_add_font_names_name (names, nameChars,
 					     strlen (nameChars));
 		    names->length[names->nnames - 1] =
 			-names->length[names->nnames - 1];
-		    (void) AddFontNamesName (names, aliasName,
+		    (void) xfont2_add_font_names_name (names, aliasName,
 					     strlen (aliasName));
 		    /* If our original pattern matches the name from
 		       the table and that name doesn't duplicate what
@@ -671,12 +672,12 @@ _FontFileAddScalableNames(FontNamesPtr names, FontNamesPtr scaleNames,
 			*max)
 		    {
 			--*max;
-			(void) AddFontNamesName (names,
+			(void) xfont2_add_font_names_name (names,
 						 scaleNames->names[i - 1],
 						 -scaleNames->length[i - 1]);
 			names->length[names->nnames - 1] =
 			    -names->length[names->nnames - 1];
-			(void) AddFontNamesName (names, aliasName,
+			(void) xfont2_add_font_names_name (names, aliasName,
 						 strlen (aliasName));
 		    }
 		}
@@ -733,7 +734,7 @@ _FontFileListFonts (pointer client, FontPathElementPtr fpe,
 	   them to the output */
 
 	/* Scalable names... */
-	scaleNames = MakeFontNamesRecord (0);
+	scaleNames = xfont2_make_font_names_record (0);
 	if (!scaleNames)
 	{
 	    if (ranges) free(ranges);
@@ -747,10 +748,10 @@ _FontFileListFonts (pointer client, FontPathElementPtr fpe,
 	_FontFileAddScalableNames(names, scaleNames, &lowerName,
 				  zeroChars, &vals, ranges, nranges,
 				  &max);
-	FreeFontNames (scaleNames);
+	xfont2_free_font_names (scaleNames);
 
 	/* Scalable aliases... */
-	scaleNames = MakeFontNamesRecord (0);
+	scaleNames = xfont2_make_font_names_record (0);
 	if (!scaleNames)
 	{
 	    if (ranges) free(ranges);
@@ -764,7 +765,7 @@ _FontFileListFonts (pointer client, FontPathElementPtr fpe,
 	_FontFileAddScalableNames(names, scaleNames, &lowerName,
 				  zeroChars, &vals, ranges, nranges,
 				  &max);
-	FreeFontNames (scaleNames);
+	xfont2_free_font_names (scaleNames);
 
 	if (ranges) free(ranges);
     }
@@ -811,7 +812,7 @@ FontFileStartListFonts(pointer client, FontPathElementPtr fpe,
     data = malloc (sizeof *data);
     if (!data)
 	return AllocError;
-    data->names = MakeFontNamesRecord (0);
+    data->names = xfont2_make_font_names_record (0);
     if (!data->names)
     {
 	free (data);
@@ -821,7 +822,7 @@ FontFileStartListFonts(pointer client, FontPathElementPtr fpe,
 			      max, data->names, mark_aliases);
     if (ret != Successful)
     {
-	FreeFontNames (data->names);
+	xfont2_free_font_names (data->names);
 	free (data);
 	return ret;
     }
@@ -1049,7 +1050,7 @@ FontFileListNextFontWithInfo(pointer client, FontPathElementPtr fpe,
 
     if (data->current == data->names->nnames)
     {
-	FreeFontNames (data->names);
+	xfont2_free_font_names (data->names);
 	free (data);
 	return BadFontName;
     }
@@ -1085,7 +1086,7 @@ FontFileListNextFontOrAlias(pointer client, FontPathElementPtr fpe,
 
     if (data->current == data->names->nnames)
     {
-	FreeFontNames (data->names);
+	xfont2_free_font_names (data->names);
 	free (data);
 	return BadFontName;
     }
@@ -1115,22 +1116,27 @@ FontFileListNextFontOrAlias(pointer client, FontPathElementPtr fpe,
     return ret;
 }
 
+static const xfont2_fpe_funcs_rec fontfile_fpe_funcs = {
+	.version = XFONT2_FPE_FUNCS_VERSION,
+	.name_check = FontFileNameCheck,
+	.init_fpe = FontFileInitFPE,
+	.free_fpe = FontFileFreeFPE,
+	.reset_fpe = FontFileResetFPE,
+	.open_font = FontFileOpenFont,
+	.close_font = FontFileCloseFont,
+	.list_fonts = FontFileListFonts,
+	.start_list_fonts_with_info = FontFileStartListFontsWithInfo,
+	.list_next_font_with_info = FontFileListNextFontWithInfo,
+	.wakeup_fpe = 0,
+	.client_died = 0,
+	.load_glyphs = 0,
+	.start_list_fonts_and_aliases = FontFileStartListFontsAndAliases,
+	.list_next_font_or_alias = FontFileListNextFontOrAlias,
+	.set_path_hook = FontFileEmptyBitmapSource,
+};
+
 void
 FontFileRegisterLocalFpeFunctions (void)
 {
-    RegisterFPEFunctions(FontFileNameCheck,
-			 FontFileInitFPE,
-			 FontFileFreeFPE,
-			 FontFileResetFPE,
-			 FontFileOpenFont,
-			 FontFileCloseFont,
-			 FontFileListFonts,
-			 FontFileStartListFontsWithInfo,
-			 FontFileListNextFontWithInfo,
-			 NULL,
-			 NULL,
-			 NULL,
-			 FontFileStartListFontsAndAliases,
-			 FontFileListNextFontOrAlias,
-			 FontFileEmptyBitmapSource);
+    register_fpe_funcs(&fontfile_fpe_funcs);
 }

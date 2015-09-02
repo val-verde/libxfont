@@ -53,6 +53,7 @@ from The Open Group.
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include "libxfontint.h"
 #include	<X11/fonts/FSproto.h>
 #include	<X11/fonts/font.h>
 #include	<X11/fonts/fontstruct.h>

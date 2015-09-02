@@ -52,6 +52,7 @@ from The Open Group.
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include "libxfontint.h"
 
 #include <ctype.h>
 #include <stdio.h>

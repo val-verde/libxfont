@@ -33,6 +33,7 @@ from The Open Group.
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include "libxfontint.h"
 
 #include <X11/fonts/fntfilst.h>
 #include <X11/fonts/bitmap.h>
@@ -43,7 +44,7 @@ from The Open Group.
 static CARD32  current_position;
 
 static int
-pcfWrite(FontFilePtr file, char *b, int c)
+pcfWrite(FontFilePtr file, const char *b, int c)
 {
     current_position += c;
     return FontFileWrite(file, b, c);
@@ -189,7 +190,7 @@ pcfPutAccel(FontFilePtr file, CARD32 format, FontInfoPtr pFontInfo)
 
 #define CanCompressMetrics(min,max) (CanCompressMetric(min) && CanCompressMetric(max))
 
-static char *
+static const char *
 pcfNameForAtom(Atom a)
 {
     return NameForAtom(a);
@@ -218,7 +219,7 @@ pcfWriteFont(FontPtr pFont, FontFilePtr file)
     int         header_size;
     FontPropPtr offsetProps;
     int         prop_pad = 0;
-    char       *atom_name;
+    const char  *atom_name;
     int         glyph;
     CARD32      offset;
 

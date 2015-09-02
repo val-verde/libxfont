@@ -33,6 +33,7 @@ from The Open Group.
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include "libxfontint.h"
 
 #include <X11/fonts/fntfilst.h>
 #include <X11/fonts/bitmap.h>
@@ -42,9 +43,6 @@ from The Open Group.
 #ifndef MAX
 #define   MAX(a,b)    (((a)>(b)) ? a : b)
 #endif
-
-/* Should get this from elsewhere */
-extern unsigned long __GetServerGeneration(void);
 
 static void bitmapUnloadScalable (FontPtr pFont);
 static void ScaleBitmap ( FontPtr pFont, CharInfoPtr opci,

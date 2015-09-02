@@ -31,6 +31,7 @@ in this Software without prior written authorization from The Open Group.
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include "libxfontint.h"
 #include <X11/fonts/fntfilio.h>
 #include <X11/Xos.h>
 #ifndef O_BINARY

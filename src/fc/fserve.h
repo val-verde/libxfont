@@ -79,13 +79,4 @@ extern FontPtr fs_create_font (FontPathElementPtr   fpe,
 
 extern int fs_load_all_glyphs ( FontPtr pfont );
 
-/*
- * These should be declared elsewhere, but I'm concerned that moving them
- * would cause problems building other pieces
- */
-extern FontPtr find_old_font (Font id);
-extern int  set_font_authorizations (char **a, int *len, pointer client);
-extern long   GetTimeInMillis (void);
-
-
 #endif				/* _FSERVE_H_ */

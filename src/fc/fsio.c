@@ -29,6 +29,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include "libxfontint.h"
 
 #ifdef WIN32
 #define _WILLWINSOCK_
@@ -65,7 +66,6 @@
 
 
 static int  padlength[4] = {0, 3, 2, 1};
-fd_set _fs_fd_mask;
 
 static int
 _fs_resize (FSBufPtr buf, long size);

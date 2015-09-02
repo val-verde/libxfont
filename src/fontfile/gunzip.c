@@ -5,6 +5,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include "libxfontint.h"
 #include <X11/fonts/fontmisc.h>
 #include <X11/fonts/bufio.h>
 #include <zlib.h>

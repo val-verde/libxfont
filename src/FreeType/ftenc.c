@@ -23,6 +23,7 @@ THE SOFTWARE.
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include "libxfontint.h"
 #include <string.h>
 
 #include <X11/fonts/fntfilst.h>

@@ -31,13 +31,14 @@ in this Software without prior written authorization from The Open Group.
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include "libxfontint.h"
 #include    <X11/fonts/fontmisc.h>
 #include    <X11/fonts/fontstruct.h>
 
 static int _FontPrivateAllocateIndex = 0;
 
 int
-AllocateFontPrivateIndex (void)
+xfont2_allocate_font_private_index (void)
 {
     return _FontPrivateAllocateIndex++;
 }
@@ -77,7 +78,7 @@ ResetFontPrivateIndex (void)
 }
 
 Bool
-_FontSetNewPrivate (FontPtr pFont, int n, pointer ptr)
+xfont2_font_set_private(FontPtr pFont, int n, pointer ptr)
 {
     pointer *new;
 

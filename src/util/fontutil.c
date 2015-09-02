@@ -33,6 +33,7 @@ from The Open Group.
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include "libxfontint.h"
 #include    <X11/fonts/fontmisc.h>
 #include    <X11/fonts/fontstruct.h>
 #include    <X11/fonts/FSproto.h>
@@ -44,25 +45,14 @@ from The Open Group.
 static int defaultGlyphCachingMode = DEFAULT_GLYPH_CACHING_MODE;
 int glyphCachingMode = DEFAULT_GLYPH_CACHING_MODE;
 
-void
-GetGlyphs(FontPtr font,
-	  unsigned long count,
-	  unsigned char *chars,
-	  FontEncoding fontEncoding,
-	  unsigned long *glyphcount,	/* RETURN */
-	  CharInfoPtr *glyphs)		/* RETURN */
-{
-    (*font->get_glyphs) (font, count, chars, fontEncoding, glyphcount, glyphs);
-}
-
 #define MIN(a,b)    ((a)<(b)?(a):(b))
 #define MAX(a,b)    ((a)>(b)?(a):(b))
 
 void
-QueryGlyphExtents(FontPtr pFont,
-		  CharInfoPtr *charinfo,
-		  unsigned long count,
-		  ExtentInfoRec *info)
+xfont2_query_glyph_extents(FontPtr pFont,
+			   CharInfoPtr *charinfo,
+			   unsigned long count,
+			   ExtentInfoRec *info)
 {
     register unsigned long i;
     xCharInfo  *pCI;
@@ -131,10 +121,10 @@ QueryGlyphExtents(FontPtr pFont,
 }
 
 Bool
-QueryTextExtents(FontPtr pFont,
-		 unsigned long count,
-		 unsigned char *chars,
-		 ExtentInfoRec *info)
+xfont2_query_text_extents(FontPtr pFont,
+			  unsigned long count,
+			  unsigned char *chars,
+			  ExtentInfoRec *info)
 {
     xCharInfo     **charinfo;
     unsigned long   n;
@@ -182,15 +172,15 @@ QueryTextExtents(FontPtr pFont,
     }
     cm = pFont->info.constantMetrics;
     pFont->info.constantMetrics = FALSE;
-    QueryGlyphExtents(pFont, (CharInfoPtr*) charinfo + firstReal,
-		      n - firstReal, info);
+    xfont2_query_glyph_extents(pFont, (CharInfoPtr*) charinfo + firstReal,
+			       n - firstReal, info);
     pFont->info.constantMetrics = cm;
     free(charinfo);
     return TRUE;
 }
 
 Bool
-ParseGlyphCachingMode(char *str)
+xfont2_parse_glyph_caching_mode(char *str)
 {
     if (!strcmp(str, "none")) defaultGlyphCachingMode = CACHING_OFF;
     else if (!strcmp(str, "all")) defaultGlyphCachingMode = CACHE_ALL_GLYPHS;
@@ -200,7 +190,7 @@ ParseGlyphCachingMode(char *str)
 }
 
 void
-InitGlyphCaching(void)
+xfont2_init_glyph_caching(void)
 {
     /* Set glyphCachingMode to the mode the server hopes to
        support.  DDX drivers that do not support the requested level
@@ -215,7 +205,7 @@ InitGlyphCaching(void)
  * caching they can support.
  */
 void
-SetGlyphCachingMode(int newmode)
+xfont2_set_glyph_caching_mode(int newmode)
 {
     if ( (glyphCachingMode > newmode) && (newmode >= 0) )
 	glyphCachingMode = newmode;

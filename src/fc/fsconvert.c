@@ -28,6 +28,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include "libxfontint.h"
 #include        <X11/X.h>
 #include 	<X11/Xtrans/Xtrans.h>
 #include	<X11/Xpoll.h>

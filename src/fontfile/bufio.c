@@ -34,6 +34,7 @@ from The Open Group.
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include "libxfontint.h"
 #include <X11/Xos.h>
 #include <X11/fonts/fontmisc.h>
 #include <X11/fonts/bufio.h>
@@ -184,7 +185,7 @@ BufFileRead (BufFilePtr f, char *b, int n)
 }
 
 int
-BufFileWrite (BufFilePtr f, char *b, int n)
+BufFileWrite (BufFilePtr f, const char *b, int n)
 {
     int	    cnt;
     cnt = n;

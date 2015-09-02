@@ -81,7 +81,9 @@ typedef struct _fs_buf {
 /* FS specific font FontPathElement data */
 typedef struct _fs_fpe_data {
     FSFpePtr	next;		/* list of all active fs fpes */
+    FontPathElementPtr fpe;	/* Back pointer to FPE */
     int         fs_fd;		/* < 0 when not running */
+    Bool	fs_listening;	/* Listening for input */
     int		fs_conn_state;	/* connection state */
     int         current_seq;
     char       *servername;

@@ -3,6 +3,7 @@
 
 #include <X11/fonts/FSproto.h>
 
+#if 0
 extern int FontCouldBeTerminal(FontInfoPtr);
 extern int CheckFSFormat(fsBitmapFormat, fsBitmapFormatMask, int *, int *,
 			 int *, int *, int *);
@@ -20,5 +21,6 @@ extern void InitGlyphCaching ( void );
 extern void SetGlyphCachingMode ( int newmode );
 extern int add_range ( fsRange *newrange, int *nranges, fsRange **range,
 		       Bool charset_subset );
+#endif
 
 #endif /* _FONTUTIL_H_ */

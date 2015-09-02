@@ -30,10 +30,9 @@ THE SOFTWARE.
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include "libxfontint.h"
 #include <X11/fonts/fontenc.h>
 #include <X11/fonts/fontencc.h>
-
-extern void ErrorF(const char *f, ...);
 
 char *
 font_encoding_from_xlfd(const char * name, int length)

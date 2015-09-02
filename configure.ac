@@ -21,8 +21,8 @@
 
 # Initialize Autoconf
 AC_PREREQ([2.60])
-AC_INIT([libXfont], [1.5.1],
-	[https://bugs.freedesktop.org/enter_bug.cgi?product=xorg], [libXfont])
+AC_INIT([libXfont2], [2.0.0],
+	[https://bugs.freedesktop.org/enter_bug.cgi?product=xorg], [libXfont2])
 AC_CONFIG_SRCDIR([Makefile.am])
 AC_CONFIG_HEADERS([config.h include/X11/fonts/fontconf.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -253,5 +253,5 @@ AC_CONFIG_FILES([Makefile
 		src/fc/Makefile
 		src/util/Makefile
 		src/stubs/Makefile
-		xfont.pc])
+		xfont2.pc])
 AC_OUTPUT

@@ -29,6 +29,7 @@ in this Software without prior written authorization from The Open Group.
 #else
 #define XFONT_BITMAP 1
 #endif
+#include "libxfontint.h"
 
 #include <X11/fonts/fontmisc.h>
 #include <X11/fonts/fntfilst.h>

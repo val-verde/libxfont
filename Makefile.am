@@ -23,6 +23,9 @@ SUBDIRS=doc src
 
 libXfontincludedir = $(includedir)/X11/fonts
 libXfontinclude_HEADERS = \
+	include/X11/fonts/libxfont2.h
+
+noinst_HEADERS = \
 	include/X11/fonts/bdfint.h   \
 	include/X11/fonts/bitmap.h   \
 	include/X11/fonts/bufio.h    \
@@ -35,13 +38,15 @@ libXfontinclude_HEADERS = \
 	include/X11/fonts/fontutil.h \
 	include/X11/fonts/fontxlfd.h \
 	include/X11/fonts/pcf.h      \
+	include/libxfontint.h        \
 	src/FreeType/ft.h	     \
 	src/FreeType/ftfuncs.h
+
 nodist_libXfontinclude_HEADERS = \
 	include/X11/fonts/fontconf.h
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = xfont.pc
+pkgconfig_DATA = xfont2.pc
 
 MAINTAINERCLEANFILES = ChangeLog INSTALL
 

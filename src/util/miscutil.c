@@ -29,38 +29,19 @@ from The Open Group.
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include "libxfontint.h"
 #include <X11/Xosdefs.h>
 #include <stdlib.h>
 #include <X11/fonts/fontmisc.h>
-#include "stubs.h"
 
 #define XK_LATIN1
 #include    <X11/keysymdef.h>
 
-
-#ifdef __SUNPRO_C
-#pragma weak serverGeneration
-#pragma weak register_fpe_functions
-#endif
-
 extern void BuiltinRegisterFpeFunctions(void);
 
-/* make sure everything initializes themselves at least once */
-weak unsigned long serverGeneration = 1;
-
-unsigned long __GetServerGeneration (void);
-
-unsigned long
-__GetServerGeneration (void)
-{
-  OVERRIDE_DATA(serverGeneration);
-  return serverGeneration;
-}
-
-weak void
+void
 register_fpe_functions (void)
 {
-    OVERRIDE_SYMBOL(register_fpe_functions);
     BuiltinRegisterFpeFunctions();
     FontFileRegisterFpeFunctions();
 #ifdef XFONT_FC

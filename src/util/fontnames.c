@@ -34,11 +34,12 @@ from The Open Group.
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include "libxfontint.h"
 #include	<X11/fonts/fontmisc.h>
 #include	<X11/fonts/fontstruct.h>
 
 void
-FreeFontNames(FontNamesPtr pFN)
+xfont2_free_font_names(FontNamesPtr pFN)
 {
     int         i;
 
@@ -53,7 +54,7 @@ FreeFontNames(FontNamesPtr pFN)
 }
 
 FontNamesPtr
-MakeFontNamesRecord(unsigned int size)
+xfont2_make_font_names_record(unsigned size)
 {
     FontNamesPtr pFN;
 
@@ -82,7 +83,9 @@ MakeFontNamesRecord(unsigned int size)
 }
 
 int
-AddFontNamesName(FontNamesPtr names, char *name, int length)
+xfont2_add_font_names_name(FontNamesPtr names,
+			   char *name,
+			   int length)
 {
     int         index = names->nnames;
     char       *nelt;

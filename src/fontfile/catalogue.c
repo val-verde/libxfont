@@ -27,6 +27,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include "libxfontint.h"
 
 #ifdef HAVE_READLINK
 #include <X11/fonts/fntfilst.h>
@@ -450,24 +451,29 @@ CatalogueListNextFontOrAlias(pointer client, FontPathElementPtr fpe,
     return ret;
 }
 
+static const xfont2_fpe_funcs_rec catalogue_fpe_funcs = {
+	.version = XFONT2_FPE_FUNCS_VERSION,
+	.name_check = CatalogueNameCheck,
+	.init_fpe = CatalogueInitFPE,
+	.free_fpe = CatalogueFreeFPE,
+	.reset_fpe = CatalogueResetFPE,
+	.open_font = CatalogueOpenFont,
+	.close_font = CatalogueCloseFont,
+	.list_fonts = CatalogueListFonts,
+	.start_list_fonts_with_info = CatalogueStartListFontsWithInfo,
+	.list_next_font_with_info = CatalogueListNextFontWithInfo,
+	.wakeup_fpe = 0,
+	.client_died = 0,
+	.load_glyphs = 0,
+	.start_list_fonts_and_aliases = CatalogueStartListFontsAndAliases,
+	.list_next_font_or_alias = CatalogueListNextFontOrAlias,
+	.set_path_hook = FontFileEmptyBitmapSource,
+};
+
 void
 CatalogueRegisterLocalFpeFunctions (void)
 {
-    RegisterFPEFunctions(CatalogueNameCheck,
-			 CatalogueInitFPE,
-			 CatalogueFreeFPE,
-			 CatalogueResetFPE,
-			 CatalogueOpenFont,
-			 CatalogueCloseFont,
-			 CatalogueListFonts,
-			 CatalogueStartListFontsWithInfo,
-			 CatalogueListNextFontWithInfo,
-			 NULL,
-			 NULL,
-			 NULL,
-			 CatalogueStartListFontsAndAliases,
-			 CatalogueListNextFontOrAlias,
-			 FontFileEmptyBitmapSource);
+    register_fpe_funcs(&catalogue_fpe_funcs);
 }
 
 #endif /* HAVE_READLINK */

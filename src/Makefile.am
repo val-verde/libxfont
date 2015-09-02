@@ -19,7 +19,7 @@
 #  TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 #  PERFORMANCE OF THIS SOFTWARE.
 
-lib_LTLIBRARIES = libXfont.la
+lib_LTLIBRARIES = libXfont2.la
 
 AM_CFLAGS = $(OS_CFLAGS) $(CWARNFLAGS)
 
@@ -58,11 +58,11 @@ SUBDIRS=\
 	$(FONTFILE_DIR) $(FREETYPE_DIR) $(BITMAP_DIR) \
 	$(BUILTINS_DIR) $(FC_DIR) $(UTIL_DIR) $(STUBS_DIR)
 
-libXfont_la_LIBADD = \
+libXfont2_la_LIBADD = \
 	$(FONTFILE_LIB) $(FREETYPE_LIB) $(BITMAP_LIB) \
 	$(BUILTINS_LIB) $(FC_LIB) $(UTIL_LIB) $(STUBS_LIB) \
 	$(FREETYPE_LIBS) $(Z_LIBS) $(MATH_LIBS) $(XFONT_LIBS)
 
-libXfont_la_SOURCES = dummy.c
+libXfont2_la_SOURCES = dummy.c
 
-libXfont_la_LDFLAGS = -version-number 1:4:1 -no-undefined
+libXfont2_la_LDFLAGS = -version-number 2:0:0 -no-undefined

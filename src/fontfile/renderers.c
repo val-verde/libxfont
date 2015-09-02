@@ -31,8 +31,8 @@ in this Software without prior written authorization from The Open Group.
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include "libxfontint.h"
 #include <X11/fonts/fntfilst.h>
-extern void ErrorF(const char *f, ...);
 
 static FontRenderersRec	renderers;
 
@@ -40,7 +40,6 @@ static FontRenderersRec	renderers;
  * XXX Maybe should allow unregistering renders. For now, just clear the
  * list at each new generation.
  */
-extern unsigned long __GetServerGeneration(void);
 static unsigned long rendererGeneration = 0;
 
 Bool

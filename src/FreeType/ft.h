@@ -82,6 +82,4 @@ unsigned FTRemap(FT_Face face, FTMappingPtr, unsigned code);
 int FTtoXReturnCode(int);
 int FTGetEnglishName(FT_Face, int, char *, int);
 
-extern void ErrorF(const char*, ...);
-
 #endif /* _FT_H_ */

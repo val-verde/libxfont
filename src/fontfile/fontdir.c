@@ -31,6 +31,7 @@ in this Software without prior written authorization from The Open Group.
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include "libxfontint.h"
 #include    <X11/fonts/fntfilst.h>
 #include    <X11/keysym.h>
 
@@ -513,7 +514,7 @@ FontFileFindNamesInScalableDir(FontTablePtr table, FontNamePtr pat, int max,
 	{
 	    name = &table->entries[i].name;
 	    if (newmax) *newmax = max - 1;
-	    return AddFontNamesName(names, name->name, name->length);
+	    return xfont2_add_font_names_name(names, name->name, name->length);
 	}
 	start = i;
 	stop = i + 1;
@@ -550,7 +551,7 @@ FontFileFindNamesInScalableDir(FontTablePtr table, FontNamePtr pat, int max,
 		    continue;
 	    }
 
-	    ret = AddFontNamesName(names, fname->name.name, fname->name.length);
+	    ret = xfont2_add_font_names_name(names, fname->name.name, fname->name.length);
 	    if (ret != Successful)
 		goto bail;
 
@@ -562,7 +563,7 @@ FontFileFindNamesInScalableDir(FontTablePtr table, FontNamePtr pat, int max,
 	    {
 		names->length[names->nnames - 1] =
 		    -names->length[names->nnames - 1];
-		ret = AddFontNamesName(names, fname->u.alias.resolved,
+		ret = xfont2_add_font_names_name(names, fname->u.alias.resolved,
 				       strlen(fname->u.alias.resolved));
 		if (ret != Successful)
 		    goto bail;

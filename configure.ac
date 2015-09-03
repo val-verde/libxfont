@@ -28,7 +28,7 @@ AC_CONFIG_HEADERS([config.h include/X11/fonts/fontconf.h])
 AC_CONFIG_MACRO_DIR([m4])
 
 # Initialize Automake
-AM_INIT_AUTOMAKE([foreign dist-bzip2])
+AM_INIT_AUTOMAKE([foreign dist-bzip2 subdir-objects])
 
 # Set common system defines for POSIX extensions, such as _GNU_SOURCE
 # Must be called before any macros that run the compiler (like
@@ -245,13 +245,5 @@ AC_SUBST([OS_CFLAGS])
 
 AC_CONFIG_FILES([Makefile
 		doc/Makefile
-		src/Makefile
-		src/fontfile/Makefile
-		src/FreeType/Makefile
-		src/builtins/Makefile
-		src/bitmap/Makefile
-		src/fc/Makefile
-		src/util/Makefile
-		src/stubs/Makefile
 		xfont2.pc])
 AC_OUTPUT

@@ -25,6 +25,7 @@ AC_INIT([libXfont], [1.5.1],
 	[https://bugs.freedesktop.org/enter_bug.cgi?product=xorg], [libXfont])
 AC_CONFIG_SRCDIR([Makefile.am])
 AC_CONFIG_HEADERS([config.h include/X11/fonts/fontconf.h])
+AC_CONFIG_MACRO_DIR([m4])
 
 # Initialize Automake
 AM_INIT_AUTOMAKE([foreign dist-bzip2])
@@ -56,6 +57,27 @@ AC_CHECK_FUNCS([poll readlink])
 # If the first PKG_CHECK_MODULES appears inside a conditional, pkg-config
 # must first be located explicitly.
 PKG_PROG_PKG_CONFIG
+
+with_cflags=""
+if test "x$GCC" = "xyes"; then
+	CC_CHECK_FLAGS_APPEND([with_cflags], [CFLAGS], [\
+				-Wall \
+				-Wextra \
+				-Wno-sign-compare \
+				-Wno-missing-field-initializers \
+				-Wno-unused-parameter \
+				-Wstrict-prototypes \
+				-Wmissing-prototypes \
+				-fvisibility=hidden \
+				-pipe \
+				-fno-strict-aliasing \
+				-ffunction-sections \
+				-fdata-sections \
+				-fno-strict-aliasing \
+				-fdiagnostics-show-option \
+				-fno-common])
+fi
+AC_SUBST([GCC_CFLAGS], $with_cflags)
 
 #
 # select libraries to include
@@ -217,6 +239,8 @@ case $host_os in
         OS_CFLAGS=
         ;;
 esac
+OS_CFLAGS="$OS_CFLAGS $GCC_CFLAGS"
+
 AC_SUBST([OS_CFLAGS])
 
 AC_CONFIG_FILES([Makefile

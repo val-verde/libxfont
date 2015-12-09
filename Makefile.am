@@ -42,9 +42,6 @@ noinst_HEADERS = \
 	src/FreeType/ft.h	     \
 	src/FreeType/ftfuncs.h
 
-nodist_libXfontinclude_HEADERS = \
-	include/X11/fonts/fontconf.h
-
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = xfont2.pc
 

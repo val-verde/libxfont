@@ -155,7 +155,7 @@ libXfont2_la_SOURCES +=			\
 	src/fc/fstrans.c
 endif
 
-EXTRA_DIST = src/builtins/buildfont
+EXTRA_DIST = src/builtins/buildfont README.md
 
 MAINTAINERCLEANFILES = ChangeLog INSTALL
 

@@ -31,6 +31,16 @@
 
 #include <X11/Xfuncproto.h>
 
+#include <stdlib.h>
+#if defined(HAVE_LIBBSD) && defined(HAVE_REALLOCARRAY)
+#include <bsd/stdlib.h>       /* for reallocarray */
+#endif
+
+#ifndef HAVE_REALLOCARRAY
+extern _X_HIDDEN void *
+reallocarray(void *optr, size_t nmemb, size_t size);
+#endif
+
 #include <string.h>
 #if defined(HAVE_LIBBSD) && defined(HAVE_STRLCPY)
 #include <bsd/string.h>       /* for strlcpy, strlcat */

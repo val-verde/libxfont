@@ -65,7 +65,7 @@ libXfont2_la_SOURCES =			\
 
 libXfont2_la_LDFLAGS = -version-number 2:0:0 -no-undefined
 
-libXfont2_la_LIBADD = $(Z_LIBS) $(MATH_LIBS) $(XFONT_LIBS)
+libXfont2_la_LIBADD = $(Z_LIBS) $(MATH_LIBS) $(XFONT_LIBS) $(LTLIBOBJS)
 
 if XFONT_FONTFILE
 libXfont2_la_SOURCES +=			\

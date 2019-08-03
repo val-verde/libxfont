@@ -52,6 +52,9 @@ AC_CHECK_HEADERS([endian.h poll.h sys/poll.h])
 
 # Checks for library functions.
 AC_CHECK_FUNCS([poll readlink])
+AC_SEARCH_LIBS([strlcat], [bsd])
+AC_CONFIG_LIBOBJ_DIR([src/util])
+AC_REPLACE_FUNCS([strlcat strlcpy])
 
 # If the first PKG_CHECK_MODULES appears inside a conditional, pkg-config
 # must first be located explicitly.

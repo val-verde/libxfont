@@ -1596,7 +1596,7 @@ BitmapOpenScalable (FontPathElementPtr fpe,
 
     /* Prepare font properties for the new font */
 
-    strcpy (fontName, scaleFrom->name.name);
+    strlcpy (fontName, scaleFrom->name.name, sizeof(fontName));
     FontParseXLFDName (fontName, vals, FONT_XLFD_REPLACE_VALUE);
 
     propCount = ComputeScaledProperties(&sourceFont->info, fontName, vals,

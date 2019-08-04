@@ -31,6 +31,7 @@ THE SOFTWARE.
 #endif
 #include "libxfontint.h"
 #include <X11/fonts/fontmisc.h>
+#include "src/util/replace.h"
 
 #include <string.h>
 #include <math.h>
@@ -1604,7 +1605,7 @@ FreeTypeAddProperties(FTFontPtr font, FontScalablePtr vals, FontInfoPtr info,
 
     info->nprops = 0;           /* in case we abort */
 
-    strcpy(val, fontname);
+    strlcpy(val, fontname, sizeof(val));
     if(FontParseXLFDName(val, vals, FONT_XLFD_REPLACE_VALUE)) {
         xlfdProps = 1;
     } else {
@@ -2199,15 +2200,16 @@ FreeTypeSetUpTTCap( char *fileName, FontScalablePtr vals,
 		/* colon exist in the right side of slash. */
 		int dirLen = p1-fileName;
 		int baseLen = fileName+len - p2 -1;
+		int fullLen = dirLen+baseLen+1;
 
-		*dynStrRealFileName = malloc(dirLen+baseLen+1);
+		*dynStrRealFileName = malloc(fullLen);
 		if( *dynStrRealFileName == NULL ) {
 		    result = AllocError;
 		    goto quit;
 		}
 		if ( 0 < dirLen )
 		    memcpy(*dynStrRealFileName, fileName, dirLen);
-		strcpy(*dynStrRealFileName+dirLen, p2+1);
+		strlcpy(*dynStrRealFileName+dirLen, p2+1, fullLen - dirLen);
 		capHead = p1;
 	    } else {
 		*dynStrRealFileName = strdup(fileName);
@@ -2269,8 +2271,9 @@ FreeTypeSetUpTTCap( char *fileName, FontScalablePtr vals,
 	}
 	if( beginptr && 0 < *face_number ) {
 	    char *slash;
-	    *dynStrFTFileName = 	/* add ->  ':'+strlen0+':'+strlen1+'\0' */
-		malloc(1+strlen(beginptr)+1+strlen(*dynStrRealFileName)+1);
+	    size_t dsftlen = 	/* add ->  ':'+strlen0+':'+strlen1+'\0' */
+		1 + strlen(beginptr) + 1 + strlen(*dynStrRealFileName) + 1;
+	    *dynStrFTFileName =	malloc(dsftlen);
 	    if( *dynStrFTFileName == NULL ){
 		result = AllocError;
 		goto quit;
@@ -2279,19 +2282,19 @@ FreeTypeSetUpTTCap( char *fileName, FontScalablePtr vals,
 	    slash = strrchr(*dynStrRealFileName,'/');
 	    if( slash ) {
 		char *p;
-		strcat(*dynStrFTFileName,*dynStrRealFileName);
+		strlcat(*dynStrFTFileName, *dynStrRealFileName, dsftlen);
 		p = strrchr(*dynStrFTFileName,'/');
 		p[1] = '\0';
-		strcat(*dynStrFTFileName,":");
-		strcat(*dynStrFTFileName,beginptr);
-		strcat(*dynStrFTFileName,":");
-		strcat(*dynStrFTFileName,slash+1);
+		strlcat(*dynStrFTFileName, ":", dsftlen);
+		strlcat(*dynStrFTFileName, beginptr, dsftlen);
+		strlcat(*dynStrFTFileName, ":", dsftlen);
+		strlcat(*dynStrFTFileName, slash+1, dsftlen);
 	    }
 	    else{
-		strcat(*dynStrFTFileName,":");
-		strcat(*dynStrFTFileName,beginptr);
-		strcat(*dynStrFTFileName,":");
-		strcat(*dynStrFTFileName,*dynStrRealFileName);
+		strlcat(*dynStrFTFileName, ":", dsftlen);
+		strlcat(*dynStrFTFileName, beginptr, dsftlen);
+		strlcat(*dynStrFTFileName, ":", dsftlen);
+		strlcat(*dynStrFTFileName, *dynStrRealFileName, dsftlen);
 	    }
 	}
 	else{

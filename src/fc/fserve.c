@@ -54,6 +54,7 @@ in this Software without prior written authorization from The Open Group.
 #include <config.h>
 #endif
 #include "libxfontint.h"
+#include "src/util/replace.h"
 
 #ifdef WIN32
 #define _WILLWINSOCK_
@@ -3369,8 +3370,9 @@ static FSFpePtr
 _fs_init_conn (const char *servername, FontPathElementPtr fpe)
 {
     FSFpePtr	conn;
+    size_t	snlen = strlen (servername) + 1;
 
-    conn = calloc (1, sizeof (FSFpeRec) + strlen (servername) + 1);
+    conn = calloc (1, sizeof (FSFpeRec) + snlen);
     if (!conn)
 	return 0;
     if (!_fs_io_init (conn))
@@ -3382,7 +3384,7 @@ _fs_init_conn (const char *servername, FontPathElementPtr fpe)
     conn->fs_conn_state = FS_CONN_UNCONNECTED;
     conn->fs_fd = -1;
     conn->fpe = fpe;
-    strcpy (conn->servername, servername);
+    strlcpy (conn->servername, servername, snlen);
     return conn;
 }
 

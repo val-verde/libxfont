@@ -34,6 +34,7 @@ in this Software without prior written authorization from The Open Group.
 #include "libxfontint.h"
 #include    <X11/fonts/fntfilst.h>
 #include    <X11/keysym.h>
+#include "src/util/replace.h"
 
 #if HAVE_STDINT_H
 #include <stdint.h>
@@ -152,11 +153,11 @@ FontFileMakeDir(const char *dirName, int size)
     else
 	dir->attributes = NULL;
     strncpy(dir->directory, dirName, dirlen);
-    dir->directory[dirlen] = '\0';
-    if (dir->attributes)
-	strcpy(dir->attributes, attrib);
     if (needslash)
-	strcat(dir->directory, "/");
+	dir->directory[dirlen] = '/';
+    dir->directory[dirlen + needslash] = '\0';
+    if (dir->attributes)
+	strlcpy(dir->attributes, attrib, attriblen + 1);
     return dir;
 }
 

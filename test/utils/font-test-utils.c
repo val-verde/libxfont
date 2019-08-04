@@ -53,6 +53,7 @@ SOFTWARE.
  */
 
 #include "font-test-utils.h"
+#include "src/util/replace.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -133,7 +134,8 @@ test_register_fpe_funcs(const xfont2_fpe_funcs_rec *funcs)
     xfont2_fpe_funcs_rec const **new;
 
     /* grow the list */
-    new = realloc(fpe_functions, (num_fpe_types + 1) * sizeof(xfont2_fpe_funcs_ptr));
+    new = reallocarray(fpe_functions, (num_fpe_types + 1),
+		       sizeof(xfont2_fpe_funcs_ptr));
     assert (new != NULL);
     fpe_functions = new;
 

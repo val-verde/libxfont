@@ -2124,7 +2124,7 @@ restrict_code_range_by_str(int count,unsigned short *refFirstCol,
 #endif
         nRanges++;
         oldRanges = ranges;
-        ranges = realloc(ranges, nRanges*sizeof(*ranges));
+        ranges = reallocarray(ranges, nRanges, sizeof(*ranges));
         if (NULL == ranges) {
             free(oldRanges);
             break;

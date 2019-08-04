@@ -34,6 +34,7 @@ from The Open Group.
 #include <config.h>
 #endif
 #include "libxfontint.h"
+#include "src/util/replace.h"
 #include    <X11/fonts/fontmisc.h>
 #include    <X11/fonts/fontstruct.h>
 #include    <X11/fonts/FSproto.h>
@@ -307,8 +308,8 @@ add_range(fsRange *newrange,
 	}
 	else if (!(*nranges % range_alloc_granularity))
 	{
-	    *range = realloc(*range, (*nranges + range_alloc_granularity) *
-				      SIZEOF(fsRange));
+	    *range = reallocarray(*range, (*nranges + range_alloc_granularity),
+				  SIZEOF(fsRange));
 	}
 
 	/* If alloc failed, just return a null list */

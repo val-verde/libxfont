@@ -185,7 +185,7 @@ FontFileAddEntry(FontTablePtr table, FontEntryPtr prototype)
 	       directory that we should just give up before we overflow. */
 	    return NULL;
 	newsize = table->size + 100;
-	entry = realloc(table->entries, newsize * sizeof(FontEntryRec));
+	entry = reallocarray(table->entries, newsize, sizeof(FontEntryRec));
 	if (!entry)
 	    return (FontEntryPtr)0;
 	table->size = newsize;

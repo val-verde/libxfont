@@ -35,6 +35,7 @@
 #include <sys/stat.h>
 #include <dirent.h>
 #include <unistd.h>
+#include "src/util/replace.h"
 
 static const char CataloguePrefix[] = "catalogue:";
 
@@ -64,7 +65,8 @@ CatalogueAddFPE (CataloguePtr cat, FontPathElementPtr fpe)
 	else
 	    cat->fpeAlloc *= 2;
 
-	new = realloc(cat->fpeList, cat->fpeAlloc * sizeof(FontPathElementPtr));
+	new = reallocarray(cat->fpeList, cat->fpeAlloc,
+			   sizeof(FontPathElementPtr));
 	if (new == NULL)
 	    return AllocError;
 

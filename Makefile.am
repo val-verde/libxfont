@@ -165,7 +165,7 @@ TEST_UTIL_SRCS = test/utils/font-test-utils.c test/utils/font-test-utils.h
 noinst_PROGRAMS = lsfontdir
 
 lsfontdir_SOURCES = test/utils/lsfontdir.c $(TEST_UTIL_SRCS)
-lsfontdir_LDADD = libXfont2.la
+lsfontdir_LDADD = libXfont2.la $(LTLIBOBJS)
 
 
 MAINTAINERCLEANFILES = ChangeLog INSTALL

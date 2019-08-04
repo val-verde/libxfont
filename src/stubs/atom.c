@@ -34,6 +34,7 @@
 #include <config.h>
 #endif
 #include "libxfontint.h"
+#include "src/util/replace.h"
 #include <X11/fonts/fontmisc.h>
 
 typedef struct _AtomList {
@@ -122,7 +123,7 @@ ResizeReverseMap(void)
         newMapSize = 1000;
     else
         newMapSize = reverseMapSize * 2;
-    newMap = realloc(reverseMap, newMapSize * sizeof(AtomListPtr));
+    newMap = reallocarray(reverseMap, newMapSize, sizeof(AtomListPtr));
     if (newMap == NULL) {
         fprintf(stderr, "ResizeReverseMap(): Error: Couldn't reallocate"
                 " reverseMap (%ld)\n",

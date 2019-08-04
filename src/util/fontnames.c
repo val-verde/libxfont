@@ -65,8 +65,8 @@ xfont2_make_font_names_record(unsigned size)
 	pFN->size = size;
 	if (size)
 	{
-	    pFN->length = malloc(size * sizeof(int));
-	    pFN->names = malloc(size * sizeof(char *));
+	    pFN->length = mallocarray(size, sizeof(int));
+	    pFN->names = mallocarray(size, sizeof(char *));
 	    if (!pFN->length || !pFN->names) {
 	    	free(pFN->length);
 	    	free(pFN->names);

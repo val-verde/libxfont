@@ -637,7 +637,7 @@ FreeTypeInstanceFindGlyph(unsigned idx_in, int flags, FTInstancePtr instance,
     }
 
     if((*glyphs)[segment] == NULL) {
-        (*glyphs)[segment] = malloc(sizeof(CharInfoRec) * FONTSEGMENTSIZE);
+        (*glyphs)[segment] = mallocarray(sizeof(CharInfoRec), FONTSEGMENTSIZE);
         if((*glyphs)[segment] == NULL)
             return AllocError;
     }
@@ -1623,7 +1623,7 @@ FreeTypeAddProperties(FTFontPtr font, FontScalablePtr vals, FontInfoPtr info,
         ( (font_properties && (post || t1info)) ? 3 : 0 ) +
         2;                      /* type */
 
-    info->props = malloc(maxprops * sizeof(FontPropRec));
+    info->props = mallocarray(maxprops, sizeof(FontPropRec));
     if(info->props == NULL)
         return AllocError;
 
@@ -2816,7 +2816,7 @@ FreeTypeLoadFont(FTFontPtr font, FontInfoPtr info, FTFacePtr face,
     font->nranges = vals->nranges;
     font->ranges = 0;
     if(font->nranges) {
-        font->ranges = malloc(vals->nranges*sizeof(fsRange));
+        font->ranges = mallocarray(vals->nranges, sizeof(fsRange));
         if(font->ranges == NULL)
             return AllocError;
         memcpy((char*)font->ranges, (char*)vals->ranges,

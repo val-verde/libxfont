@@ -1089,7 +1089,7 @@ fs_read_extent_info(FontPathElementPtr fpe, FSBlockDataPtr blockrec)
 	pCI = NULL;
     }
     else
-	pCI = malloc(sizeof(CharInfoRec) * numInfos);
+	pCI = mallocarray(numInfos, sizeof(CharInfoRec));
 
     if (!pCI)
     {

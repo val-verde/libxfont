@@ -90,7 +90,7 @@ xfont2_font_set_private(FontPtr pFont, int n, pointer ptr)
 		return FALSE;
 	} else {
 	    /* omg realloc */
-	    new = malloc ((n + 1) * sizeof (pointer));
+	    new = reallocarray (NULL, (n + 1), sizeof (pointer));
 	    if (!new)
 		return FALSE;
 	    if (pFont->devPrivates)

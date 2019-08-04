@@ -49,7 +49,7 @@ FontFileInitTable (FontTablePtr table, int size)
 	return FALSE;
     if (size)
     {
-	table->entries = malloc(sizeof(FontEntryRec) * size);
+	table->entries = mallocarray(size, sizeof(FontEntryRec));
 	if (!table->entries)
 	    return FALSE;
     }

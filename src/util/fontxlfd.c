@@ -448,6 +448,7 @@ FontParseXLFDName(char *fname, FontScalablePtr vals, int subst)
 	break;
     case FONT_XLFD_REPLACE_STAR:
 	replaceChar = '*';
+	/* FALLTHROUGH */
     case FONT_XLFD_REPLACE_ZERO:
 	strlcpy(tmpBuf, ptr2, sizeof(tmpBuf));
 	ptr5 = tmpBuf + (ptr5 - ptr2);

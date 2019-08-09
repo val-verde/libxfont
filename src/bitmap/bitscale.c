@@ -597,7 +597,7 @@ ComputeScaledProperties(FontInfoPtr sourceFontInfo, /* the font to be scaled */
     *pIsStringProp = isStringProp;
     if (!isStringProp)
     {
- fprintf(stderr, "Error: Couldn't allocate isStringProp (%d)\n", nProps);
+	fprintf(stderr, "Error: Couldn't allocate isStringProp (%d)\n", nProps);
 	free (fp);
 	return 1;
     }

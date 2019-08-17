@@ -151,14 +151,12 @@ CatalogueRescan (FontPathElementPtr fpe, Bool forceScan)
     if ((forceScan == FALSE) && (statbuf.st_mtime <= cat->mtime))
 	return Successful;
 
+    CatalogueUnrefFPEs (fpe);
+
     dir = opendir(path);
     if (dir == NULL)
-    {
-	free(cat);
 	return BadFontPath;
-    }
 
-    CatalogueUnrefFPEs (fpe);
     while (entry = readdir(dir), entry != NULL)
     {
         char *name;

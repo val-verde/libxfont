@@ -2079,7 +2079,8 @@ fs_read_glyphs(FontPathElementPtr fpe, FSBlockDataPtr blockrec)
     err = Successful;
 
 bail:
-    _fs_done_read (conn, rep->length << 2);
+    if (rep)
+	_fs_done_read (conn, rep->length << 2);
     return err;
 }
 

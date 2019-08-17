@@ -616,8 +616,10 @@ ComputeScaledProperties(FontInfoPtr sourceFontInfo, /* the font to be scaled */
 	*isStringProp = 0;
 	switch (fpt->type) {
 	case atom:
-	    fp->value = MakeAtom(ptr1, ptr2 - ptr1, TRUE);
-	    *isStringProp = 1;
+	    if ((ptr1 != NULL) && (ptr2 != NULL)) {
+		fp->value = MakeAtom(ptr1, ptr2 - ptr1, TRUE);
+		*isStringProp = 1;
+	    }
 	    break;
 	case truncate_atom:
 	    for (ptr3 = ptr1; *ptr3; ptr3++)

@@ -40,7 +40,8 @@ noinst_HEADERS = \
 	include/X11/fonts/pcf.h      \
 	include/libxfontint.h        \
 	src/FreeType/ft.h	     \
-	src/FreeType/ftfuncs.h
+	src/FreeType/ftfuncs.h       \
+	src/util/replace.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = xfont2.pc

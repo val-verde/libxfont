@@ -53,6 +53,9 @@ AC_CHECK_HEADERS([endian.h poll.h sys/poll.h])
 # Checks for library functions.
 AC_CHECK_FUNCS([poll readlink])
 AC_SEARCH_LIBS([strlcat], [bsd])
+if test "$ac_cv_search_strlcat" = "-lbsd"; then
+  AC_DEFINE(HAVE_LIBBSD,1,[Has libbsd])
+fi
 AC_CONFIG_LIBOBJ_DIR([src/util])
 AC_REPLACE_FUNCS([reallocarray realpath strlcat strlcpy])
 

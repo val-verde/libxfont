@@ -1697,16 +1697,6 @@ fs_send_open_font(pointer client, FontPathElementPtr fpe, Mask flags,
 	return AllocError;
     }
 
-    /*
-     * Must check this before generating any protocol, otherwise we'll
-     * mess up a reconnect in progress
-     */
-    if (conn->blockState & (FS_BROKEN_CONNECTION | FS_RECONNECTING))
-    {
-	_fs_pending_reply (conn);
-	return Suspended;
-    }
-
     fsd->generation = conn->generation;
 
     bfont = (FSBlockedFontPtr) blockrec->data;
@@ -1717,6 +1707,16 @@ fs_send_open_font(pointer client, FontPathElementPtr fpe, Mask flags,
     bfont->format = fsd->format;
     bfont->clients_depending = (FSClientsDependingPtr)0;
     bfont->freeFont = (flags & FontReopen) == 0;
+
+    /*
+     * Must check this before generating any protocol, otherwise we'll
+     * mess up a reconnect in progress
+     */
+    if (conn->blockState & (FS_BROKEN_CONNECTION | FS_RECONNECTING))
+    {
+	_fs_pending_reply (conn);
+	return Suspended;
+    }
 
     _fs_client_access (conn, client, (flags & FontOpenSync) != 0);
     _fs_client_resolution(conn);

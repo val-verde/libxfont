@@ -71,6 +71,9 @@ from The Open Group.
 #      ifdef NOFILE
 #       define OPEN_MAX NOFILE
 #      else
+#       ifndef NOFILES_MAX
+#        define NOFILES_MAX 256
+#       endif
 #       define OPEN_MAX NOFILES_MAX
 #      endif
 #     endif
